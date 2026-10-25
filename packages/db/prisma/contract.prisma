@@ -48,3 +48,110 @@ model Product {
 
   @@map("product")
 }
+
+/// Status in the workflow sequence
+native_enum SequenceStatus {
+  NEW = "new"
+  FIRST_SENT = "first_sent"
+  FOLLOW_UP_1_SENT = "follow_up_1_sent"
+  FOLLOW_UP_2_SENT = "follow_up_2_sent"
+  FOLLOW_UP_3_SENT = "follow_up_3_sent"
+  REPLIED = "replied"
+  BOUNCED = "bounced"
+  UNSUBSCRIBED = "unsubscribed"
+  DEACTIVATED = "deactivated"
+}
+
+/// Classification of reply email based on its intent
+native_enum ReplyIntent {
+
+  /// The user wants more information, demo, or a pricing sheet
+  INTERESTED = "interested"
+
+  /// The user explicitly declines the offer but is polite.
+  NOT_INTERESTED = "not_interested"
+
+  /// The user wants to be removed from the list.
+  UNSUBSCRIBE = "unsubscribe"
+
+  /// Automated replies.
+  OUT_OF_OFFICE = "out_of_office"
+
+  /// The user directly proposes a time or asks for a booking link.
+  MEETING_SCHEDULED = "meeting_scheduled"
+
+  /// The contact says they aren't the right decision-maker but sometimes provides the correct contact.
+  REFERRAL = "referral"
+  
+  /// Coudn't classify as any of the obove classes.
+  OTHERS = "others"
+}
+
+/// Prospect's contact details
+model Prospect {
+  id        Int   @id @default(autoincrement())
+  name      String
+  email     String
+  
+  company   String
+  role      String
+  
+  timezone  String
+
+  /// Current status in the workflow sequence
+  status    pg.enum(SequenceStatus) @default("new")
+
+  /// Number of days to wait between emails.
+  waitDays  SmallInt @default(3)
+
+  /// Set to true, if no more email will be sent
+  isDeactivated Boolean @default(false)
+
+  /// Relation field: A user can have many sent emails
+  sentEmails    EmailRecord[] 
+
+  /// The next email to send after the current wait time.
+  nextEmail     EmailRecord? @relation(fields: [nextEmailId], references: [id], onDelete: Restrict)
+  nextEmailId   Int? 
+
+  /// The reply sent by the prospect
+  replyEmail     EmailRecord? @relation(fields: [replyEmailId], references: [id], onDelete: Restrict)
+  replyEmailId   Int? 
+
+  /// Classification of reply email based on its intent
+  replyIntent pg.enum(ReplyIntent)?
+}
+
+native_enum EmailStatus {
+  SENT = "sent"
+  FAILED = "failed"
+  PENDING = "pending"
+}
+
+model EmailRecord {
+  id        Int   @id @default(autoincrement())
+  subject   String
+  body      String   // Use String for text. For HTML content, this works perfectly.
+  status    pg.enum(EmailStatus) @default("pending")
+  sentAt    DateTime @default(now())
+  
+  bounced   Boolean  @default(false)
+
+  /// Foreign key linking to the User
+  prospectId    Int
+  prospect      Prospect   @relation(fields: [prospectId], references: [id], onDelete: Cascade)
+
+  @@index([prospectId]) // Index for fast lookups when fetching a user's email history
+}
+
+/// Email Templates where reciever specific details are marked by
+///   placeholders in the form of XML tags. 
+///   For example <name>, and <company> in the body will be replaced 
+///   by the reciever's actual name and company respectively.
+model EmailTemplate {
+  id        Int   @id @default(autoincrement())
+  subject   String
+  body      String   // Use String for text. For HTML content, this works perfectly.
+
+  sequence_state pg.enum(SequenceStatus)
+}

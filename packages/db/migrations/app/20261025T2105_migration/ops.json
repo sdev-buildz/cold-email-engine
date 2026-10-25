@@ -1,0 +1,88 @@
+[
+  {
+    "id": "alterNullability.dropNotNull.Prospect.nextEmailId",
+    "label": "Drop NOT NULL on \"Prospect\".\"nextEmailId\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "nextEmailId",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"nextEmailId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "nextEmailId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop NOT NULL on \"nextEmailId\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\" ALTER COLUMN \"nextEmailId\" DROP NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"nextEmailId\" is nullable",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "nextEmailId",
+          "YES"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "alterNullability.dropNotNull.Prospect.replyEmailId",
+    "label": "Drop NOT NULL on \"Prospect\".\"replyEmailId\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "replyEmailId",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"replyEmailId\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "replyEmailId"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop NOT NULL on \"replyEmailId\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\" ALTER COLUMN \"replyEmailId\" DROP NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"replyEmailId\" is nullable",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"is_nullable\" = $4)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "replyEmailId",
+          "YES"
+        ]
+      }
+    ]
+  }
+]

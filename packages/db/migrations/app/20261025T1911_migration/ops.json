@@ -1,0 +1,389 @@
+[
+  {
+    "id": "createNativeEnumType.EmailStatus",
+    "label": "Create enum type \"EmailStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "EmailStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"EmailStatus\"",
+        "sql": "CREATE TYPE \"public\".\"EmailStatus\" AS ENUM ('sent', 'failed', 'pending')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.ReplyIntent",
+    "label": "Create enum type \"ReplyIntent\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "ReplyIntent"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"ReplyIntent\"",
+        "sql": "CREATE TYPE \"public\".\"ReplyIntent\" AS ENUM ('interested', 'not_interested', 'unsubscribe', 'out_of_office', 'meeting_scheduled', 'referral', 'others')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "createNativeEnumType.SequenceStatus",
+    "label": "Create enum type \"SequenceStatus\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "type",
+        "name": "SequenceStatus"
+      }
+    },
+    "precheck": [],
+    "execute": [
+      {
+        "description": "create enum type \"SequenceStatus\"",
+        "sql": "CREATE TYPE \"public\".\"SequenceStatus\" AS ENUM ('new', 'first_sent', 'follow_up_1_sent', 'follow_up_2_sent', 'follow_up_3_sent', 'replied', 'bounced', 'unsubscribed', 'deactivated')",
+        "params": []
+      }
+    ],
+    "postcheck": []
+  },
+  {
+    "id": "table.EmailRecord",
+    "label": "Create table \"EmailRecord\"",
+    "summary": "Creates table \"EmailRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "EmailRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"EmailRecord\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailRecord\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"EmailRecord\"",
+        "sql": "CREATE TABLE \"public\".\"EmailRecord\" (\n  \"body\" text NOT NULL,\n  \"bounced\" bool DEFAULT false NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"prospectId\" int4 NOT NULL,\n  \"sentAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"status\" \"EmailStatus\" DEFAULT 'pending'::\"EmailStatus\" NOT NULL,\n  \"subject\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"EmailRecord\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailRecord\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.Prospect",
+    "label": "Create table \"Prospect\"",
+    "summary": "Creates table \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"Prospect\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"Prospect\"",
+        "sql": "CREATE TABLE \"public\".\"Prospect\" (\n  \"company\" text NOT NULL,\n  \"email\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"isDeactivated\" bool DEFAULT false NOT NULL,\n  \"name\" text NOT NULL,\n  \"nextEmailId\" int4 NOT NULL,\n  \"replyEmailId\" int4 NOT NULL,\n  \"replyIntent\" \"ReplyIntent\" DEFAULT NULL,\n  \"role\" text NOT NULL,\n  \"status\" \"SequenceStatus\" DEFAULT 'new'::\"SequenceStatus\" NOT NULL,\n  \"timezone\" text NOT NULL,\n  \"waitDays\" int2 DEFAULT 3 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"Prospect\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.EmailRecord.EmailRecord_prospectId_idx_ac586e70",
+    "label": "Create index \"EmailRecord_prospectId_idx_ac586e70\" on \"EmailRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "EmailRecord_prospectId_idx_ac586e70",
+        "table": "EmailRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"EmailRecord_prospectId_idx_ac586e70\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailRecord_prospectId_idx_ac586e70\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"EmailRecord_prospectId_idx_ac586e70\"",
+        "sql": "CREATE INDEX \"EmailRecord_prospectId_idx_ac586e70\" ON \"public\".\"EmailRecord\" (\"prospectId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"EmailRecord_prospectId_idx_ac586e70\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailRecord_prospectId_idx_ac586e70\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Prospect.Prospect_nextEmailId_idx_753fd109",
+    "label": "Create index \"Prospect_nextEmailId_idx_753fd109\" on \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Prospect_nextEmailId_idx_753fd109",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Prospect_nextEmailId_idx_753fd109\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect_nextEmailId_idx_753fd109\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Prospect_nextEmailId_idx_753fd109\"",
+        "sql": "CREATE INDEX \"Prospect_nextEmailId_idx_753fd109\" ON \"public\".\"Prospect\" (\"nextEmailId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Prospect_nextEmailId_idx_753fd109\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect_nextEmailId_idx_753fd109\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.Prospect.Prospect_replyEmailId_idx_947d2a5c",
+    "label": "Create index \"Prospect_replyEmailId_idx_947d2a5c\" on \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "Prospect_replyEmailId_idx_947d2a5c",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"Prospect_replyEmailId_idx_947d2a5c\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect_replyEmailId_idx_947d2a5c\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"Prospect_replyEmailId_idx_947d2a5c\"",
+        "sql": "CREATE INDEX \"Prospect_replyEmailId_idx_947d2a5c\" ON \"public\".\"Prospect\" (\"replyEmailId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"Prospect_replyEmailId_idx_947d2a5c\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"Prospect_replyEmailId_idx_947d2a5c\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.EmailRecord.EmailRecord_prospectId_fkey",
+    "label": "Add foreign key \"EmailRecord_prospectId_fkey\" on \"EmailRecord\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "EmailRecord_prospectId_fkey",
+        "table": "EmailRecord"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"EmailRecord_prospectId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EmailRecord_prospectId_fkey",
+          "public",
+          "\"public\".\"EmailRecord\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"EmailRecord_prospectId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"EmailRecord\"\nADD CONSTRAINT \"EmailRecord_prospectId_fkey\"\nFOREIGN KEY (\"prospectId\")\nREFERENCES \"public\".\"Prospect\" (\"id\")\nON DELETE CASCADE"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"EmailRecord_prospectId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "EmailRecord_prospectId_fkey",
+          "public",
+          "\"public\".\"EmailRecord\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Prospect.Prospect_nextEmailId_fkey",
+    "label": "Add foreign key \"Prospect_nextEmailId_fkey\" on \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Prospect_nextEmailId_fkey",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Prospect_nextEmailId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Prospect_nextEmailId_fkey",
+          "public",
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Prospect_nextEmailId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\"\nADD CONSTRAINT \"Prospect_nextEmailId_fkey\"\nFOREIGN KEY (\"nextEmailId\")\nREFERENCES \"public\".\"EmailRecord\" (\"id\")\nON DELETE RESTRICT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Prospect_nextEmailId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Prospect_nextEmailId_fkey",
+          "public",
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.Prospect.Prospect_replyEmailId_fkey",
+    "label": "Add foreign key \"Prospect_replyEmailId_fkey\" on \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "Prospect_replyEmailId_fkey",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"Prospect_replyEmailId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Prospect_replyEmailId_fkey",
+          "public",
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"Prospect_replyEmailId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\"\nADD CONSTRAINT \"Prospect_replyEmailId_fkey\"\nFOREIGN KEY (\"replyEmailId\")\nREFERENCES \"public\".\"EmailRecord\" (\"id\")\nON DELETE RESTRICT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"Prospect_replyEmailId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "Prospect_replyEmailId_fkey",
+          "public",
+          "\"public\".\"Prospect\""
+        ]
+      }
+    ]
+  }
+]

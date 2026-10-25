@@ -1,0 +1,44 @@
+[
+  {
+    "id": "dropDefault.Prospect.replyIntent",
+    "label": "Drop default on \"Prospect\".\"replyIntent\"",
+    "operationClass": "widening",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "replyIntent",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"replyIntent\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "replyIntent"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop default on \"replyIntent\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\" ALTER COLUMN \"replyIntent\" DROP DEFAULT"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"replyIntent\" has no default",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3 AND \"column_default\" IS NULL)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "replyIntent"
+        ]
+      }
+    ]
+  }
+]

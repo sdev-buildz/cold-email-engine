@@ -8,6 +8,10 @@
     ".": {
       "types": "./prisma/db.ts",
       "default": "./prisma/db.ts"
+    },
+    "./types": {
+      "types": "./prisma/contract.d.ts",
+      "default": "./prisma/contract.d.ts"
     }
   },
   "scripts": {

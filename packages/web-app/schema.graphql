@@ -4,6 +4,18 @@ input CheckoutInput {
   id: ID!
 }
 
+scalar DateTime
+
+"""An Email Record"""
+type EmailRecord {
+  body: String
+  bounced: Boolean
+  id: ID
+  prospect: Prospect
+  sentAt: DateTime
+  subject: String
+}
+
 """The schema root for mutating data"""
 type Mutation {
   """Checkout cart"""
@@ -21,6 +33,22 @@ type Product {
   summary: String
 }
 
+"""A Prospect"""
+type Prospect {
+  email: String
+  id: ID
+  isDeactivated: Boolean
+  name: String
+  nextEmail: EmailRecord
+  replyEmail: EmailRecord
+  replyIntent: ReplyIntent
+  role: String
+  sentEmails: [EmailRecord!]
+  status: String
+  timezone: String
+  waitDays: Int
+}
+
 """The schema root for fetching data."""
 type Query {
   """Fetch a product by id."""
@@ -28,7 +56,14 @@ type Query {
 
   """List of available products."""
   products: [Product!]
+
+  """
+  List of prospects, their contact details, and their status in the workflow sequence.
+  """
+  prospects: [Prospect!]
 }
+
+scalar ReplyIntent
 
 """The schema root for subscriptions"""
 type Subscription {

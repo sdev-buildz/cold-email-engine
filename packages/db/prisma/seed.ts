@@ -75,6 +75,76 @@ async function seedProducts(db: PostgresClient<Contract>) {
   logger.info('Created: ', newProducts)
 }
 
+async function emailTemplates(db: PostgresClient<Contract>) {
+  // Start from an empty table so you can run this file more than once.
+  //  This enables idempotency.
+  await db.orm.public.EmailTemplate.where({}).deleteAll()
+
+  const bodyFooter = `
+Sincerely,
+Developer at MnemioAI
+
+To unsubscribe, click <a href="https://mnemio.ai.example.com/unsubscribe?email=<email>">unsubscribe</a>
+  `
+
+  const newTemplates = await db.orm.public.EmailTemplate.createAll([
+    {
+      sequence_state: 'first_sent',
+      subject: `Introducing MnemioAI!`,
+      body: `
+        Hi <name>,
+        
+        Introducing MnemioAI! 
+
+        An AI agent for everyone on your team.
+
+        Connected to 1500+ apps.
+        
+        Week one: Dev shows his agent how he builds the ads report.
+        Weak four: The report builds itself.
+
+        Lena changes her outreach offer. Her agent sees it working.
+        Then the rest of the sales team hears about it.
+
+        Agents share what's useful with the company brain.
+
+        Their agent's memory moves to the next person.
+
+        ${bodyFooter}
+      `,
+    },
+  ])
+
+  logger.info('Created templates =', newTemplates)
+}
+
+async function seedProspects(db: PostgresClient<Contract>) {
+  // Start from an empty table so you can run this file more than once.
+  //  This enables idempotency.
+  await db.orm.public.Prospect.where({}).deleteAll()
+
+  const newProspects = await db.orm.public.Prospect.createAll([
+    {
+      name: 'indian_name_1',
+      company: 'tech-comp-1',
+      email: 'name123@tech.com',
+      role: 'sde',
+      timezone: 'Asia/Kolkata',
+      status: 'new',
+    },
+    {
+      name: 'indian_name_2',
+      company: 'tech-comp-2',
+      email: 'name222@tech.com',
+      role: 'sde',
+      timezone: 'Asia/Kolkata',
+      status: 'first_sent',
+    },
+  ])
+
+  logger.info('Created Prospects =', newProspects)
+}
+
 async function main() {
   const db = initDb()
 
@@ -99,6 +169,8 @@ async function main() {
   logger.info('All users: ', users)
 
   await seedProducts(db)
+
+  await seedProspects(db)
 
   await db.close()
 }

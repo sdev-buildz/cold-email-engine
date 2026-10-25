@@ -1,0 +1,41 @@
+[
+  {
+    "id": "table.EmailTemplate",
+    "label": "Create table \"EmailTemplate\"",
+    "summary": "Creates table \"EmailTemplate\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "EmailTemplate"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"EmailTemplate\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailTemplate\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"EmailTemplate\"",
+        "sql": "CREATE TABLE \"public\".\"EmailTemplate\" (\n  \"body\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"sequence_state\" \"SequenceStatus\" NOT NULL,\n  \"subject\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"EmailTemplate\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"EmailTemplate\""
+        ]
+      }
+    ]
+  }
+]

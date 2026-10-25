@@ -1,3 +1,4 @@
+import './email'
 import { builder } from './lib/builder'
 import './products'
 
