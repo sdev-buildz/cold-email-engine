@@ -1,0 +1,32 @@
+{
+  "name": "@packages/db",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The database using Prisma.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./prisma/db.ts",
+      "default": "./prisma/db.ts"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:emit": "pnpm prisma contract emit",
+    "prisma:init": "pnpm prisma db init",
+    "prisma:seed": "pnpm exec tsx ./prisma/seed.ts",
+    "prisma:migration-plan": "pnpm prisma migration plan",
+    "prisma:migrate": "pnpm prisma db migrate --advance-ref db"
+  },
+  "dependencies": {
+    "@prisma/orm-postgres": "8.0.0-rc.18",
+    "dotenv": "^18.0.8",
+    "temporal-polyfill": "^1.0.6"
+  },
+  "devDependencies": {
+    "@packages/logger": "workspace:*",
+    "prisma": "8.0.0-rc.23",
+    "tsx": "catalog:",
+    "typescript": "catalog:"
+  }
+}
