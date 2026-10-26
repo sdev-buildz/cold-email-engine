@@ -67,7 +67,7 @@ Open a **new** dedicated terminal window/tab and run:
 pnpm run start-server
 ```
 
-It opens at "https://localhost:443". So make sure the port is not occupied.
+It runs at "https://localhost:443". So you may need to make sure that the port is available for this server.
 
 _(Leave this terminal open to keep the backend server alive.)_
 
@@ -79,7 +79,7 @@ Open another **new** dedicated terminal window/tab to start the frontend applica
 pnpm run start-react
 ```
 
-It opens at "https://localhost:3000". So make sure the port is not occupied.
+It runs at "https://localhost:3000". So you may need to make sure that the port is available for this server.
 
 _(Leave this terminal open. Your default browser should automatically open the app's local interface.)_
 
