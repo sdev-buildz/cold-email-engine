@@ -158,6 +158,18 @@ model EmailTemplate {
   sequence_state pg.enum(SequenceStatus)
 }
 
+/// Email Templates where reciever specific details are marked by
+///   placeholders in the form of XML tags. 
+///   For example <name>, and <company> in the body will be replaced 
+///   by the reciever's actual name and company respectively.
+model ReplyEmails {
+  id        Int   @id @default(autoincrement())
+  subject   String
+  body      String   // Use String for text. For HTML content, this works perfectly.
+
+  intent pg.enum(ReplyIntent)
+}
+
 model WorkflowStatus {
   id        Int   @id @default(autoincrement())
   

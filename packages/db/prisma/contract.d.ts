@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'eaa868448d8835a3d20840b645d15905594e382dff05fce814638c7fa94c72db'>;
+  StorageHashBase<'9a0ffec2632aed71ea2f9ffb83abd75c0be3980c448421d533c4cd7f2cf42622'>;
 export type ExecutionHash =
   ExecutionHashBase<'f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d'>;
 export type ProfileHash =
@@ -320,6 +320,19 @@ export type FieldOutputTypes = {
       readonly timezone: CodecTypes['pg/text@1']['output'];
       readonly waitDays: CodecTypes['pg/int2@1']['output'];
     };
+    readonly ReplyEmails: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly intent:
+        | 'interested'
+        | 'not_interested'
+        | 'unsubscribe'
+        | 'out_of_office'
+        | 'meeting_scheduled'
+        | 'referral'
+        | 'others';
+      readonly subject: CodecTypes['pg/text@1']['output'];
+    };
     readonly User: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
@@ -421,6 +434,19 @@ export type FieldInputTypes = {
         | 'deactivated';
       readonly timezone: CodecTypes['pg/text@1']['input'];
       readonly waitDays: CodecTypes['pg/int2@1']['input'];
+    };
+    readonly ReplyEmails: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly intent:
+        | 'interested'
+        | 'not_interested'
+        | 'unsubscribe'
+        | 'out_of_office'
+        | 'meeting_scheduled'
+        | 'referral'
+        | 'others';
+      readonly subject: CodecTypes['pg/text@1']['input'];
     };
     readonly User: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -524,6 +550,19 @@ export type StorageColumnTypes = {
       readonly timezone: CodecTypes['pg/text@1']['output'];
       readonly waitDays: CodecTypes['pg/int2@1']['output'];
     };
+    readonly ReplyEmails: {
+      readonly body: CodecTypes['pg/text@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly intent:
+        | 'interested'
+        | 'not_interested'
+        | 'unsubscribe'
+        | 'out_of_office'
+        | 'meeting_scheduled'
+        | 'referral'
+        | 'others';
+      readonly subject: CodecTypes['pg/text@1']['output'];
+    };
     readonly users: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly email: CodecTypes['pg/text@1']['output'];
@@ -625,6 +664,19 @@ export type StorageColumnInputTypes = {
         | 'deactivated';
       readonly timezone: CodecTypes['pg/text@1']['input'];
       readonly waitDays: CodecTypes['pg/int2@1']['input'];
+    };
+    readonly ReplyEmails: {
+      readonly body: CodecTypes['pg/text@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly intent:
+        | 'interested'
+        | 'not_interested'
+        | 'unsubscribe'
+        | 'out_of_office'
+        | 'meeting_scheduled'
+        | 'referral'
+        | 'others';
+      readonly subject: CodecTypes['pg/text@1']['input'];
     };
     readonly users: {
       readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -739,6 +791,20 @@ export namespace Models {
     sentEmails: public_EmailRecord[];
     readonly [RelationKeys]?: 'nextEmail' | 'replyEmail' | 'sentEmails';
   };
+  export type public_ReplyEmails = {
+    body: CodecTypes['pg/text@1']['output'];
+    id: CodecTypes['pg/int4@1']['output'];
+    intent:
+      | 'interested'
+      | 'not_interested'
+      | 'unsubscribe'
+      | 'out_of_office'
+      | 'meeting_scheduled'
+      | 'referral'
+      | 'others';
+    subject: CodecTypes['pg/text@1']['output'];
+    readonly [RelationKeys]?: never;
+  };
   export type public_User = {
     createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     email: CodecTypes['pg/text@1']['output'];
@@ -764,6 +830,7 @@ export declare const models: {
     EmailTemplate: Models.public_EmailTemplate;
     Product: Models.public_Product;
     Prospect: Models.public_Prospect;
+    ReplyEmails: Models.public_ReplyEmails;
     User: Models.public_User;
     WorkflowStatus: Models.public_WorkflowStatus;
   };
@@ -1294,6 +1361,43 @@ type ContractBase = Omit<
                 },
               ];
             };
+            readonly ReplyEmails: {
+              columns: {
+                readonly body: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly intent: {
+                  readonly dataType: 'pg/enum';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly typeName: 'ReplyIntent' };
+                  readonly many: false;
+                };
+                readonly subject: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
             readonly users: {
               columns: {
                 readonly createdAt: {
@@ -1437,6 +1541,10 @@ type ContractBase = Omit<
       readonly model: 'EmailTemplate';
     };
     readonly Prospect: { readonly namespace: 'public' & NamespaceId; readonly model: 'Prospect' };
+    readonly ReplyEmails: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ReplyEmails';
+    };
     readonly blog: { readonly namespace: 'public' & NamespaceId; readonly model: 'Blog' };
     readonly product: { readonly namespace: 'public' & NamespaceId; readonly model: 'Product' };
     readonly users: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
@@ -1839,6 +1947,41 @@ type ContractBase = Omit<
                 readonly status: { readonly column: 'status' };
                 readonly timezone: { readonly column: 'timezone' };
                 readonly waitDays: { readonly column: 'waitDays' };
+              };
+            };
+          };
+          readonly ReplyEmails: {
+            readonly fields: {
+              readonly body: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly intent: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'ReplyIntent' };
+                };
+              };
+              readonly subject: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'ReplyEmails';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly body: { readonly column: 'body' };
+                readonly id: { readonly column: 'id' };
+                readonly intent: { readonly column: 'intent' };
+                readonly subject: { readonly column: 'subject' };
               };
             };
           };

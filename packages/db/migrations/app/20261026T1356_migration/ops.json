@@ -1,0 +1,41 @@
+[
+  {
+    "id": "table.ReplyEmails",
+    "label": "Create table \"ReplyEmails\"",
+    "summary": "Creates table \"ReplyEmails\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ReplyEmails"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ReplyEmails\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReplyEmails\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ReplyEmails\"",
+        "sql": "CREATE TABLE \"public\".\"ReplyEmails\" (\n  \"body\" text NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"intent\" \"ReplyIntent\" NOT NULL,\n  \"subject\" text NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ReplyEmails\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ReplyEmails\""
+        ]
+      }
+    ]
+  }
+]
