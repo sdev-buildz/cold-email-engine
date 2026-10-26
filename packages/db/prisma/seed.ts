@@ -89,6 +89,16 @@ async function seedWorkflowStatus(db: PostgresClient<Contract>) {
   logger.info('Created WorkflowStatus =', newWorkflowStatus)
 }
 
+async function seedConversionMetrics(db: PostgresClient<Contract>) {
+  // Start from an empty table so you can run this file more than once.
+  //  This enables idempotency.
+  await db.orm.public.ConversionMetrics.where({}).deleteAll()
+
+  const newConversionMetrics = await db.orm.public.ConversionMetrics.create({})
+
+  logger.info('Created ConversionMetrics =', newConversionMetrics)
+}
+
 async function main() {
   const db = initDb()
 
@@ -115,6 +125,7 @@ async function main() {
   await seedProspects(db)
   await seedWorkflowStatus(db)
   await seedEmailTemplates(db)
+  await seedConversionMetrics(db)
 
   await db.close()
 }

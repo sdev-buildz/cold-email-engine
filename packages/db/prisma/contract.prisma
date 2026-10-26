@@ -61,7 +61,6 @@ native_enum SequenceStatus {
   UNSUBSCRIBED = "unsubscribed"
   DEACTIVATED = "deactivated"
 }
-
 /// Classification of reply email based on its intent
 native_enum ReplyIntent {
 
@@ -166,4 +165,22 @@ model WorkflowStatus {
   waitIntervalDays Int @default(3)
 
   @@map("workflow-status")
+}
+
+///  The rates for different responses
+///   The sum total of all these rates should be lesser than or equal to 100%.
+///   If it is lesser, the remaining percentage can be 
+///     considered as 'couldn't be classified by model', etc...
+///
+///  Contains only one row.
+model ConversionMetrics {
+  id              Int   @id @default(autoincrement())
+  bounceRate      Int  @default(5)
+  ignoreRate      Int @default(20)
+  unsubscribeRate Int @default(40)
+  notInterested   Int @default(15)
+  oooRate         Int @default(5)
+  referralRate    Int @default(2)
+  interested      Int @default(5)
+  meetingRate     Int @default(5)
 }

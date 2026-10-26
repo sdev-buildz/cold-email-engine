@@ -1,0 +1,41 @@
+[
+  {
+    "id": "table.ConversionMetrics",
+    "label": "Create table \"ConversionMetrics\"",
+    "summary": "Creates table \"ConversionMetrics\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "ConversionMetrics"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"ConversionMetrics\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ConversionMetrics\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"ConversionMetrics\"",
+        "sql": "CREATE TABLE \"public\".\"ConversionMetrics\" (\n  \"OooRate\" int4 DEFAULT 5 NOT NULL,\n  \"bounceRate\" int4 DEFAULT 5 NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"ignoreRate\" int4 DEFAULT 20 NOT NULL,\n  \"interested\" int4 DEFAULT 5 NOT NULL,\n  \"meetingRate\" int4 DEFAULT 5 NOT NULL,\n  \"notInterested\" int4 DEFAULT 15 NOT NULL,\n  \"referralRate\" int4 DEFAULT 2 NOT NULL,\n  \"unsubscribeRate\" int4 DEFAULT 40 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"ConversionMetrics\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"ConversionMetrics\""
+        ]
+      }
+    ]
+  }
+]

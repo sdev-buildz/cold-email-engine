@@ -4,6 +4,30 @@ input CheckoutInput {
   id: ID!
 }
 
+type ConversionMetrics {
+  bounceRate: Float
+  id: ID
+  ignoreRate: Float
+  interested: Float
+  meetingRate: Float
+  notInterested: Float
+  oooRate: Float
+  referralRate: Float
+  unsubscribeRate: Float
+}
+
+"""Conversion metrics input"""
+input ConversionMetricsInput {
+  bounceRate: Int
+  ignoreRate: Int
+  interested: Int
+  meetingRate: Int
+  notInterested: Int
+  oooRate: Int
+  referralRate: Int
+  unsubscribeRate: Int
+}
+
 scalar DateTime
 
 """An Email Record"""
@@ -20,6 +44,9 @@ type EmailRecord {
 type Mutation {
   """Checkout cart"""
   checkout(cart: [CheckoutInput!]!): [Product!]
+
+  """Configure conversion metrics"""
+  configureConversionMetrics(metrics: ConversionMetricsInput!): ConversionMetrics
 
   """Configure the number of days to wait between emails"""
   configureWaitInterval(days: Int!): WorkflowStatus
@@ -58,6 +85,9 @@ type Prospect {
 
 """The schema root for fetching data."""
 type Query {
+  """Conversion metrics"""
+  conversionMetrics: ConversionMetrics
+
   """Fetch a product by id."""
   productById(id: ID!): Product
 

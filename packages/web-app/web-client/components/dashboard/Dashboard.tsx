@@ -1,3 +1,4 @@
+import { ConversionMetrics } from './RateConfig'
 import { WorkflowStatus } from './WorkflowStatus'
 
 /**
@@ -7,6 +8,7 @@ export const Dashboard = () => {
   return (
     <div id='dashboard'>
       <WorkflowStatus></WorkflowStatus>
+      <ConversionMetrics />
     </div>
   )
 }

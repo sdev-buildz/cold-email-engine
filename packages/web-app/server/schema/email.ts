@@ -107,8 +107,6 @@ WorkflowStatusRef.implement({
   }),
 })
 
-console.log('querying')
-console.log(await db.orm.public.WorkflowStatus.first())
 builder.queryField('workflowStatus', (t) =>
   t.field({
     type: WorkflowStatusRef,

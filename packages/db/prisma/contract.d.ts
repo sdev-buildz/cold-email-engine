@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e12c73d9749995d0b664afff74aa3bd9431599306e57d7d16cfd7db0deede6e4'>;
+  StorageHashBase<'96fbccd216e706bc7b5e8c3f867f352c494f3ed666acb4cdbb258e95bceac79a'>;
 export type ExecutionHash =
   ExecutionHashBase<'f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d'>;
 export type ProfileHash =
@@ -244,6 +244,17 @@ export type FieldOutputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly userId: CodecTypes['pg/int4@1']['output'];
     };
+    readonly ConversionMetrics: {
+      readonly bounceRate: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly ignoreRate: CodecTypes['pg/int4@1']['output'];
+      readonly interested: CodecTypes['pg/int4@1']['output'];
+      readonly meetingRate: CodecTypes['pg/int4@1']['output'];
+      readonly notInterested: CodecTypes['pg/int4@1']['output'];
+      readonly oooRate: CodecTypes['pg/int4@1']['output'];
+      readonly referralRate: CodecTypes['pg/int4@1']['output'];
+      readonly unsubscribeRate: CodecTypes['pg/int4@1']['output'];
+    };
     readonly EmailRecord: {
       readonly body: CodecTypes['pg/text@1']['output'];
       readonly bounced: CodecTypes['pg/bool@1']['output'];
@@ -333,6 +344,17 @@ export type FieldInputTypes = {
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly userId: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly ConversionMetrics: {
+      readonly bounceRate: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly ignoreRate: CodecTypes['pg/int4@1']['input'];
+      readonly interested: CodecTypes['pg/int4@1']['input'];
+      readonly meetingRate: CodecTypes['pg/int4@1']['input'];
+      readonly notInterested: CodecTypes['pg/int4@1']['input'];
+      readonly oooRate: CodecTypes['pg/int4@1']['input'];
+      readonly referralRate: CodecTypes['pg/int4@1']['input'];
+      readonly unsubscribeRate: CodecTypes['pg/int4@1']['input'];
     };
     readonly EmailRecord: {
       readonly body: CodecTypes['pg/text@1']['input'];
@@ -424,6 +446,17 @@ export type StorageColumnTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly user_id: CodecTypes['pg/int4@1']['output'];
     };
+    readonly ConversionMetrics: {
+      readonly bounceRate: CodecTypes['pg/int4@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly ignoreRate: CodecTypes['pg/int4@1']['output'];
+      readonly interested: CodecTypes['pg/int4@1']['output'];
+      readonly meetingRate: CodecTypes['pg/int4@1']['output'];
+      readonly notInterested: CodecTypes['pg/int4@1']['output'];
+      readonly oooRate: CodecTypes['pg/int4@1']['output'];
+      readonly referralRate: CodecTypes['pg/int4@1']['output'];
+      readonly unsubscribeRate: CodecTypes['pg/int4@1']['output'];
+    };
     readonly EmailRecord: {
       readonly body: CodecTypes['pg/text@1']['output'];
       readonly bounced: CodecTypes['pg/bool@1']['output'];
@@ -513,6 +546,17 @@ export type StorageColumnInputTypes = {
       readonly title: CodecTypes['pg/text@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly user_id: CodecTypes['pg/int4@1']['input'];
+    };
+    readonly ConversionMetrics: {
+      readonly bounceRate: CodecTypes['pg/int4@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly ignoreRate: CodecTypes['pg/int4@1']['input'];
+      readonly interested: CodecTypes['pg/int4@1']['input'];
+      readonly meetingRate: CodecTypes['pg/int4@1']['input'];
+      readonly notInterested: CodecTypes['pg/int4@1']['input'];
+      readonly oooRate: CodecTypes['pg/int4@1']['input'];
+      readonly referralRate: CodecTypes['pg/int4@1']['input'];
+      readonly unsubscribeRate: CodecTypes['pg/int4@1']['input'];
     };
     readonly EmailRecord: {
       readonly body: CodecTypes['pg/text@1']['input'];
@@ -606,6 +650,18 @@ export namespace Models {
     author: public_User;
     readonly [RelationKeys]?: 'author';
   };
+  export type public_ConversionMetrics = {
+    bounceRate: CodecTypes['pg/int4@1']['output'];
+    id: CodecTypes['pg/int4@1']['output'];
+    ignoreRate: CodecTypes['pg/int4@1']['output'];
+    interested: CodecTypes['pg/int4@1']['output'];
+    meetingRate: CodecTypes['pg/int4@1']['output'];
+    notInterested: CodecTypes['pg/int4@1']['output'];
+    oooRate: CodecTypes['pg/int4@1']['output'];
+    referralRate: CodecTypes['pg/int4@1']['output'];
+    unsubscribeRate: CodecTypes['pg/int4@1']['output'];
+    readonly [RelationKeys]?: never;
+  };
   export type public_EmailRecord = {
     body: CodecTypes['pg/text@1']['output'];
     bounced: CodecTypes['pg/bool@1']['output'];
@@ -698,6 +754,7 @@ export namespace Models {
 export declare const models: {
   public: {
     Blog: Models.public_Blog;
+    ConversionMetrics: Models.public_ConversionMetrics;
     EmailRecord: Models.public_EmailRecord;
     EmailTemplate: Models.public_EmailTemplate;
     Product: Models.public_Product;
@@ -809,6 +866,104 @@ type ContractBase = Omit<
                   };
                 },
               ];
+            };
+            readonly ConversionMetrics: {
+              columns: {
+                readonly bounceRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 5>;
+                  };
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly ignoreRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 20>;
+                  };
+                  readonly many: false;
+                };
+                readonly interested: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 5>;
+                  };
+                  readonly many: false;
+                };
+                readonly meetingRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 5>;
+                  };
+                  readonly many: false;
+                };
+                readonly notInterested: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 15>;
+                  };
+                  readonly many: false;
+                };
+                readonly oooRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 5>;
+                  };
+                  readonly many: false;
+                };
+                readonly referralRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 2>;
+                  };
+                  readonly many: false;
+                };
+                readonly unsubscribeRate: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 40>;
+                  };
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
             };
             readonly EmailRecord: {
               columns: {
@@ -1251,6 +1406,10 @@ type ContractBase = Omit<
   readonly target: 'postgres';
   readonly targetFamily: 'sql';
   readonly roots: {
+    readonly ConversionMetrics: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'ConversionMetrics';
+    };
     readonly EmailRecord: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'EmailRecord';
@@ -1336,6 +1495,62 @@ type ContractBase = Omit<
                 readonly title: { readonly column: 'title' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
                 readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly ConversionMetrics: {
+            readonly fields: {
+              readonly bounceRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly ignoreRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly interested: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly meetingRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly notInterested: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly oooRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly referralRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly unsubscribeRate: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'ConversionMetrics';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly bounceRate: { readonly column: 'bounceRate' };
+                readonly id: { readonly column: 'id' };
+                readonly ignoreRate: { readonly column: 'ignoreRate' };
+                readonly interested: { readonly column: 'interested' };
+                readonly meetingRate: { readonly column: 'meetingRate' };
+                readonly notInterested: { readonly column: 'notInterested' };
+                readonly oooRate: { readonly column: 'oooRate' };
+                readonly referralRate: { readonly column: 'referralRate' };
+                readonly unsubscribeRate: { readonly column: 'unsubscribeRate' };
               };
             };
           };
