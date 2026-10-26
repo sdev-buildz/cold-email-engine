@@ -48,7 +48,7 @@ export function App() {
           <BrowserRouter>
             <NavBar />
             <Routes>
-              <Route index element={<>Use the navbar to navigate.</>} />
+              <Route index element={<Dashboard />} />
               <Route path='prospects' element={<ProspectsPage />} />
               <Route path='dashboard' element={<Dashboard />} />
             </Routes>

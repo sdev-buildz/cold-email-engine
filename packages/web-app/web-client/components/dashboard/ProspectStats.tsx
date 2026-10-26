@@ -110,10 +110,6 @@ export const ProspectStats = () => {
                 <Typography component='p' variant='h4'>
                   {formatCount(prospectStats.sendingTodayCount)}
                 </Typography>
-                <Typography color='text.secondary' variant='body2'>
-                  Sending tomorrow:{' '}
-                  {/* {formatCount(prospectStats.sendingTomorrowCount)} */}
-                </Typography>
               </CardContent>
             </Card>
           </Stack>

@@ -24,7 +24,7 @@ export const WorkflowStatus = () => {
   const [ffDays, setFfDays] = useState(1)
   const [waitDays, setWaitDays] = useState(1)
 
-  const [fastForward] = useMutation(
+  const [fastForward, ffResult] = useMutation(
     gql`
       mutation fastForward($days: Int!) {
         fastForward(days: $days) {
@@ -34,6 +34,9 @@ export const WorkflowStatus = () => {
     ` as TypedDocumentNode<Pick<Mutation, 'fastForward'>>,
     {
       refetchQueries: ['workflowStatusQuery'],
+      onCompleted: () => {
+        window.location.reload()
+      },
     }
   )
 
@@ -54,6 +57,9 @@ export const WorkflowStatus = () => {
     <div id='workflow-status-container'>
       <dl id='workflow-status'>
         <h3>Workflow Status</h3>
+        {ffResult.loading && (
+          <p>Fast Forwarding... This could take a minute...</p>
+        )}
         <dt>Current Time :</dt>
         <dd>
           {workflowStatus.data?.workflowStatus?.currentTime?.toLocaleString()}
@@ -73,6 +79,7 @@ export const WorkflowStatus = () => {
           onChange={(e) => setFfDays(Number(e.target.value))}
           min='1'
           max='30'
+          disabled={workflowStatus.loading ? true : undefined}
         ></input>
         <button
           type='button'

@@ -33,7 +33,7 @@ export const NavBar = () => {
     <AppBar position='static' variant='elevation' color='transparent'>
       <Toolbar>
         <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-          Shopping Site
+          cold-email engine
         </Typography>
         <nav id='nav-links'>
           {pages.map((page, idx) => (
