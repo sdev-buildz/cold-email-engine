@@ -52,9 +52,10 @@ docker compose up
 
 _(Keep this terminal open to keep the database active.)_
 
-### 3. Seed the database
+### 3. Set up the database
 
 ```shell
+pnpm run prisma:migrate
 pnpm run prisma:seed
 ```
 
