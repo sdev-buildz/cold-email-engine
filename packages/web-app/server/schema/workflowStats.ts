@@ -1,7 +1,7 @@
-import { initDb } from '@packages/db';
-import type { WorkflowStatus } from '../util/types';
-import { builder } from './lib/builder';
-import { ffNdays } from './util/fast-forward';
+import { initDb } from '@packages/db'
+import type { WorkflowStatus } from '../util/types'
+import { builder } from './lib/builder'
+import { ffNdays } from './util/fast-forward'
 
 /** DB client */
 const db = initDb()
@@ -78,13 +78,16 @@ type ProspectStats = {
   totalProspects: number
   activeProspects: number
   activePercent: number
+  sendingTodayCount: number
+  sendingTomorrowCount: number
   deactivatedProspects: number
   deactivatedPercent: number
   statusBreakdown: ProspectStatusStats[]
 }
 
-const ProspectStatusStatsRef =
-  builder.objectRef<ProspectStatusStats>('ProspectStatusStats')
+const ProspectStatusStatsRef = builder.objectRef<ProspectStatusStats>(
+  'ProspectStatusStats'
+)
 
 ProspectStatusStatsRef.implement({
   fields: (t) => ({
@@ -101,6 +104,8 @@ ProspectStatsRef.implement({
     totalProspects: t.exposeInt('totalProspects'),
     activeProspects: t.exposeInt('activeProspects'),
     activePercent: t.exposeFloat('activePercent'),
+    sendingTodayCount: t.exposeInt('sendingTodayCount'),
+    sendingTomorrowCount: t.exposeInt('sendingTomorrowCount'),
     deactivatedProspects: t.exposeInt('deactivatedProspects'),
     deactivatedPercent: t.exposeFloat('deactivatedPercent'),
     statusBreakdown: t.field({
@@ -121,6 +126,58 @@ builder.queryField('prospectStats', (t) =>
         (prospect) => prospect.isDeactivated
       ).length
       const activeProspects = totalProspects - deactivatedProspects
+
+      const activeProspectsList = prospects.filter((p) => !p.isDeactivated)
+
+      // Getting count to sent today and tomorrow
+      const workflowStatus = await db.orm.public.WorkflowStatus.first()
+      if (!workflowStatus) throw new Error('Workflow status is not configured')
+      const waitFromDate = new Date()
+      waitFromDate.setDate(
+        waitFromDate.getDate() - workflowStatus.waitIntervalDays
+      )
+      /** Count of prospects to be sent today */
+      const sendingTodayCount = activeProspectsList.filter(
+        (p) =>
+          new Date(p.lastSentAt.epochMilliseconds) < waitFromDate &&
+          p.status !== 'follow_up_3_sent'
+      ).length
+
+      /** Count of prospects to be sent tomorrow */
+      // const sendingTomorrowCount =
+      //   activeProspectsList.filter((p) => {
+      //     waitFromDate.setDate(waitFromDate.getDate() + 1)
+      //     const lastSentAtDate = new Date(p.lastSentAt.epochMilliseconds)
+      //     const msInADay = 24 * 60 * 60 * 1000
+
+      //     const waitEndsAt =
+      //       lastSentAtDate.getTime() +
+      //       workflowStatus.waitIntervalDays * msInADay
+
+      //     const now = Date.now()
+      //     const tomorrow = now + msInADay
+
+      //     const isBetween = waitEndsAt >= now && waitEndsAt <= tomorrow
+
+      //     if (!isBetween) return false
+
+      //     if (workflowStatus.waitIntervalDays > 1) {
+      //       if (p.status === 'follow_up_3_sent') {
+      //         return false
+      //       }
+      //       return true
+      //     }
+
+      //     if (
+      //       p.status === 'follow_up_3_sent' ||
+      //       p.status === 'follow_up_2_sent'
+      //     ) {
+      //       return false
+      //     }
+
+      //     return true
+      //   }).length - sendingTodayCount
+
       const statusCounts = new Map<string, number>()
 
       for (const prospect of prospects) {
@@ -137,6 +194,8 @@ builder.queryField('prospectStats', (t) =>
         totalProspects,
         activeProspects,
         activePercent: percentage(activeProspects),
+        sendingTodayCount,
+        sendingTomorrowCount: 0,
         deactivatedProspects,
         deactivatedPercent: percentage(deactivatedProspects),
         statusBreakdown: Array.from(statusCounts, ([status, count]) => ({

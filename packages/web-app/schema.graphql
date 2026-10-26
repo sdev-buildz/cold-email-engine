@@ -88,6 +88,8 @@ type ProspectStats {
   activeProspects: Int
   deactivatedPercent: Float
   deactivatedProspects: Int
+  sendingTodayCount: Int
+  sendingTomorrowCount: Int
   statusBreakdown: [ProspectStatusStats!]
   totalProspects: Int
 }

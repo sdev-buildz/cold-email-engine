@@ -31,6 +31,8 @@ export const ProspectStats = () => {
         prospectStats {
           activePercent
           activeProspects
+          sendingTodayCount
+          sendingTomorrowCount
           deactivatedPercent
           deactivatedProspects
           statusBreakdown {
@@ -41,7 +43,10 @@ export const ProspectStats = () => {
           totalProspects
         }
       }
-    ` as TypedDocumentNode<Pick<Query, 'prospectStats'>>
+    ` as TypedDocumentNode<Pick<Query, 'prospectStats'>>,
+    {
+      fetchPolicy: 'network-only',
+    }
   )
   const prospectStats = stats.data?.prospectStats
 
@@ -100,13 +105,14 @@ export const ProspectStats = () => {
             <Card variant='outlined' sx={{ flex: '1 1 180px' }}>
               <CardContent>
                 <Typography color='text.secondary' variant='body2'>
-                  Deactivated prospects
+                  Sending today
                 </Typography>
                 <Typography component='p' variant='h4'>
-                  {formatCount(prospectStats.deactivatedProspects)}
+                  {formatCount(prospectStats.sendingTodayCount)}
                 </Typography>
                 <Typography color='text.secondary' variant='body2'>
-                  {formatPercent(prospectStats.deactivatedPercent)} of total
+                  Sending tomorrow:{' '}
+                  {/* {formatCount(prospectStats.sendingTomorrowCount)} */}
                 </Typography>
               </CardContent>
             </Card>

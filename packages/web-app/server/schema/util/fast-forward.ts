@@ -1,21 +1,10 @@
 import { initDb } from '@packages/db'
-import type { Prospect } from '../../util/types'
+import { Temporal } from 'temporal-polyfill'
+import 'temporal-polyfill/full/global'
 import { writeEmail } from './editEmail'
 
 /** DB client */
 const db = initDb()
-
-const sequenceStatus = {
-  new: 'new',
-  first_sent: 'first_sent',
-  follow_up_1_sent: 'follow_up_1_sent',
-  follow_up_2_sent: 'follow_up_2_sent',
-  follow_up_3_sent: 'follow_up_3_sent',
-  replied: 'replied',
-  bounced: 'bounced',
-  unsubscribed: 'unsubscribed',
-  deactivated: 'deactivated',
-} satisfies Record<Prospect['status'], Prospect['status']>
 
 /**
  * Fast forwards the stimulation time by one day.
@@ -30,26 +19,44 @@ export const fastForwardOneDay = async () => {
   const { currentTime, waitIntervalDays: waitDays } = workflowStatus
 
   /** If sent after this date, wait more days */
-  const waitFrom = new Date()
-  waitFrom.setDate(waitFrom.getDate() - waitDays)
+  const waitFromDate = new Date(currentTime.epochMilliseconds)
+  waitFromDate.setDate(waitFromDate.getDate() - waitDays)
+  const waitFromTemporal = Temporal.Instant.from(waitFromDate.toISOString())
 
-  const prospectsToSend = await db.orm.public.Prospect.where({
+  let prospectsToSend = await db.orm.public.Prospect.where({
     isDeactivated: false,
-    lastSentAt: {
-      lt: waitFrom, // "lt" means less than (before 3 days ago)
-    },
   }).all()
+
+  prospectsToSend = prospectsToSend.filter((prospect) => {
+    const lastSentAt = new Date(prospect.lastSentAt!.epochMilliseconds)
+    return lastSentAt < waitFromDate
+  })
+
+  console.log('sending emails for', prospectsToSend.length, 'prospects')
 
   // Send emails
   for (const prospect of prospectsToSend) {
-    const { newEmail, nextStatus } = await writeEmail(prospect)
-    sendEmail()
+    const newEmailData = await writeEmail(prospect)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    let nextStatus: any
+    if (newEmailData) {
+      nextStatus = newEmailData.nextStatus
+      const { newEmail } = newEmailData
+      sendEmail()
+    }
     await db.orm.public.Prospect.where({ id: prospect.id }).update({
       status: nextStatus,
       lastSentAt: currentTime,
     })
   }
 
+  // forward the current time pointer
+  await db.orm.public.WorkflowStatus.where({ id: workflowStatus.id }).update({
+    currentTime: currentTime
+      .toZonedDateTimeISO('UTC')
+      .add({ days: 1 })
+      .toInstant(),
+  })
   // Randomly provide replies.
 }
 
@@ -57,7 +64,9 @@ export const fastForwardOneDay = async () => {
  * Fast forwards the stimulation time by N days
  */
 export const ffNdays = async (days: number) => {
+  console.log('ff ', days, ' days')
   for (let i = 0; i < days; i++) {
+    console.log('ff day ', i + 1)
     await fastForwardOneDay()
   }
 }

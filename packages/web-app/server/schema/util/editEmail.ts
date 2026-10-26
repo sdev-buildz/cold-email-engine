@@ -41,7 +41,7 @@ export const writeEmail = async (prospect: Prospect) => {
     sequence_state: nextStatus,
   }).first()
   if (!emailTemplate) {
-    throw new Error(`No email template configured for status: ${nextStatus}`)
+    return
   }
 
   const newEmail = {
