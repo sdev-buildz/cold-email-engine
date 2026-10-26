@@ -111,3 +111,13 @@ I used database to persist state and data across runs. So data will not be lost.
 ## AI model
 
 Currently I mocked the AI API calls.
+
+## Screenshots
+
+### Dashboard
+
+<img src="./assets/dashboard.png">
+
+### Prospects List
+
+<img src="./assets/propects-list.png">
