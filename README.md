@@ -2,6 +2,8 @@
   <h1 align="center">a cold-email engine that never loses track of a contact</h1>
 </hgroup>
 
+It does show 10000 prospects. configurations are allowed through UI dashboard. API to send email is done.
+
 ## 🖥️ System Requirements & Prerequisites
 
 Before running the application, ensure you have the following prerequisites installed for your specific operating system:
