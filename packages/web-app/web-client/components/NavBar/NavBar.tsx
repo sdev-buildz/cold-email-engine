@@ -10,7 +10,9 @@ import Toolbar from '@mui/material/Toolbar'
 import Typography from '@mui/material/Typography'
 import { visuallyHidden } from '@mui/utils'
 import { useContext } from 'react'
+import { NavLink } from 'react-router'
 import { AppContext } from '../../contexts/AppContext'
+import { pages } from '../../util/pages'
 import { ColorModeSwitch } from './ColorModeSwitch'
 
 /**
@@ -33,7 +35,18 @@ export const NavBar = () => {
         <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
           Shopping Site
         </Typography>
-
+        <nav id='nav-links'>
+          {pages.map((page, idx) => (
+            <NavLink
+              to={page.path}
+              className={({ isActive }) =>
+                `nav-link ${isActive ? 'active' : ''}`
+              }
+            >
+              <Typography sx={{ textAlign: 'center' }}>{page.label}</Typography>
+            </NavLink>
+          ))}
+        </nav>
         <FormControlLabel
           control={
             <ColorModeSwitch

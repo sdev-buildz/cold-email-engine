@@ -1,7 +1,9 @@
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
+import { BrowserRouter, Route, Routes } from 'react-router'
 import { NavBar } from './components/NavBar/NavBar'
 import { ProductsPage } from './components/ProductsPage/ProductsPage'
+import { ProspectsPage } from './components/ProspectsPage/ProspectsPage'
 import { AppContext, defaultAppContext } from './contexts/AppContext'
 
 const theme = createTheme({
@@ -43,8 +45,13 @@ export function App() {
       <ThemeProvider theme={theme} defaultMode='dark'>
         <CssBaseline enableColorScheme />
         <AppContext.Provider value={defaultAppContext}>
-          <NavBar />
-          <ProductsPage />
+          <BrowserRouter>
+            <NavBar />
+            <Routes>
+              <Route index element={<ProductsPage />} />
+              <Route path='prospects' element={<ProspectsPage />} />
+            </Routes>
+          </BrowserRouter>
         </AppContext.Provider>
       </ThemeProvider>
     </div>
