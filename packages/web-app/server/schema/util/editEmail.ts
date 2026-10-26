@@ -1,4 +1,4 @@
-import type { Prospect } from '../../util/types'
+import type { Prospect } from '../../util/types';
 
 const sequenceStatus = {
   new: 'new',
@@ -37,7 +37,7 @@ export const writeEmail = async (prospect: Prospect) => {
   const emailTemplate = await db.orm.public.EmailTemplate.where({
     sequence_state: nextStatus,
   }).first()!
-  if (!emailTemplate) return
+  if (!emailTemplate) throw
 
   const newEmail = emailTemplate
 
@@ -53,5 +53,5 @@ export const writeEmail = async (prospect: Prospect) => {
     .replaceAll('<company>', prospect.company)
     .replaceAll('<role>', prospect.role)
 
-  return newEmail
+  return { newEmail, nextStatus }
 }

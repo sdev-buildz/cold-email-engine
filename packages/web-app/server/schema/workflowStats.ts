@@ -1,7 +1,7 @@
 import { initDb } from '@packages/db'
-import { addDays } from '../util/resolveDateTime'
 import type { WorkflowStatus } from '../util/types'
 import { builder } from './lib/builder'
+import { ffNdays } from './util/fast-forward'
 
 /** DB client */
 const db = initDb()
@@ -37,11 +37,11 @@ builder.mutationField('fastForward', (t) =>
         throw new Error('Workflow status is not configured')
       }
 
+      await ffNdays(days)
+
       return db.orm.public.WorkflowStatus.where({
         id: workflowStatus.id,
-      }).update({
-        currentTime: addDays(workflowStatus.currentTime, days),
-      })
+      }).first()
     },
   })
 )

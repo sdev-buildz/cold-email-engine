@@ -41,11 +41,21 @@ export const fastForwardOneDay = async () => {
   }).all()
 
   for (const prospect of prospectsToSend) {
-    const newEmail = writeEmail(prospect)
+    const { newEmail, nextStatus } = await writeEmail(prospect)
     sendEmail()
     await db.orm.public.Prospect.where({ id: prospect.id }).update({
+      status: nextStatus,
       lastSentAt: currentTime,
     })
+  }
+}
+
+/**
+ * Fast forwards the stimulation time by N days
+ */
+export const ffNdays = async (days: number) => {
+  for (let i = 0; i < days; i++) {
+    await fastForwardOneDay()
   }
 }
 
