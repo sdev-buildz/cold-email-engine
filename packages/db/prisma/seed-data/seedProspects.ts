@@ -88,7 +88,7 @@ export async function readProspectsFromCsv() {
           ? '2026-10-25T00:17:07.151Z'
           : row['last-sent-at']!
       ),
-      isDeactivated: Boolean(row.isDeactivated!),
+      isDeactivated: row.isDeactivated!.toLowerCase() === 'true',
     }
   })
 }
