@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url'
 
 import { logger } from '@packages/logger'
 import type { PostgresClient } from '@prisma/orm-postgres/runtime'
+import { Temporal } from 'temporal-polyfill'
 import type { Contract } from '../contract'
 
 type SequenceStatus =
@@ -75,7 +76,6 @@ export async function readProspectsFromCsv() {
     )
 
     const status = row.status as SequenceStatus
-
     return {
       name: row.name!,
       company: row.company!,
@@ -83,6 +83,11 @@ export async function readProspectsFromCsv() {
       email: row.email!,
       timezone: row.timezone!,
       status,
+      lastSentAt: Temporal.Instant.from(
+        row['last-sent-at'] === ''
+          ? '2026-10-25T00:17:07.151Z'
+          : row['last-sent-at']!
+      ),
       isDeactivated: Boolean(row.isDeactivated!),
     }
   })
