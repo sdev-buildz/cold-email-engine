@@ -1,7 +1,21 @@
 import { initDb } from '@packages/db'
+import type { Prospect } from '../../util/types'
+import { writeEmail } from './editEmail'
 
 /** DB client */
 const db = initDb()
+
+const sequenceStatus = {
+  new: 'new',
+  first_sent: 'first_sent',
+  follow_up_1_sent: 'follow_up_1_sent',
+  follow_up_2_sent: 'follow_up_2_sent',
+  follow_up_3_sent: 'follow_up_3_sent',
+  replied: 'replied',
+  bounced: 'bounced',
+  unsubscribed: 'unsubscribed',
+  deactivated: 'deactivated',
+} satisfies Record<Prospect['status'], Prospect['status']>
 
 /**
  * Fast forwards the stimulation time by one day.
@@ -14,4 +28,27 @@ export const fastForwardOneDay = async () => {
   }
 
   const { currentTime, waitIntervalDays: waitDays } = workflowStatus
+
+  /** If sent after this date, wait more days */
+  const waitFrom = new Date()
+  waitFrom.setDate(waitFrom.getDate() - waitDays)
+
+  const prospectsToSend = await db.orm.public.Prospect.where({
+    isDeactivated: false,
+    lastSentAt: {
+      lt: waitFrom, // "lt" means less than (before 3 days ago)
+    },
+  }).all()
+
+  for (const prospect of prospectsToSend) {
+    const newEmail = writeEmail(prospect)
+    sendEmail()
+    await db.orm.public.Prospect.where({ id: prospect.id }).update({
+      lastSentAt: currentTime,
+    })
+  }
+}
+
+async function sendEmail() {
+  // batches emails to send and sends at the end
 }
