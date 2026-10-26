@@ -40,6 +40,7 @@ export const fastForwardOneDay = async () => {
     },
   }).all()
 
+  // Send emails
   for (const prospect of prospectsToSend) {
     const { newEmail, nextStatus } = await writeEmail(prospect)
     sendEmail()
@@ -48,6 +49,8 @@ export const fastForwardOneDay = async () => {
       lastSentAt: currentTime,
     })
   }
+
+  // Randomly provide replies.
 }
 
 /**

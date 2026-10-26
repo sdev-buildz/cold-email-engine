@@ -1,4 +1,7 @@
-import type { Prospect } from '../../util/types';
+import { initDb } from '@packages/db'
+import type { Prospect } from '../../util/types'
+
+const db = initDb()
 
 const sequenceStatus = {
   new: 'new',
@@ -36,22 +39,24 @@ export const writeEmail = async (prospect: Prospect) => {
 
   const emailTemplate = await db.orm.public.EmailTemplate.where({
     sequence_state: nextStatus,
-  }).first()!
-  if (!emailTemplate) throw
+  }).first()
+  if (!emailTemplate) {
+    throw new Error(`No email template configured for status: ${nextStatus}`)
+  }
 
-  const newEmail = emailTemplate
-
-  newEmail.body
-    .replaceAll('<name>', prospect.name)
-    .replaceAll('<email>', prospect.email)
-    .replaceAll('<company>', prospect.company)
-    .replaceAll('<role>', prospect.role)
-
-  newEmail.subject
-    .replaceAll('<name>', prospect.name)
-    .replaceAll('<email>', prospect.email)
-    .replaceAll('<company>', prospect.company)
-    .replaceAll('<role>', prospect.role)
+  const newEmail = {
+    ...emailTemplate,
+    body: emailTemplate.body
+      .replaceAll('<name>', prospect.name)
+      .replaceAll('<email>', prospect.email)
+      .replaceAll('<company>', prospect.company)
+      .replaceAll('<role>', prospect.role),
+    subject: emailTemplate.subject
+      .replaceAll('<name>', prospect.name)
+      .replaceAll('<email>', prospect.email)
+      .replaceAll('<company>', prospect.company)
+      .replaceAll('<role>', prospect.role),
+  }
 
   return { newEmail, nextStatus }
 }

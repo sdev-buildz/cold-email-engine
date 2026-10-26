@@ -1,7 +1,7 @@
-import { initDb } from '@packages/db'
-import type { WorkflowStatus } from '../util/types'
-import { builder } from './lib/builder'
-import { ffNdays } from './util/fast-forward'
+import { initDb } from '@packages/db';
+import type { WorkflowStatus } from '../util/types';
+import { builder } from './lib/builder';
+import { ffNdays } from './util/fast-forward';
 
 /** DB client */
 const db = initDb()
@@ -64,6 +64,87 @@ builder.mutationField('configureWaitInterval', (t) =>
       }).update({
         waitIntervalDays: days,
       })
+    },
+  })
+)
+
+type ProspectStatusStats = {
+  status: string
+  count: number
+  percent: number
+}
+
+type ProspectStats = {
+  totalProspects: number
+  activeProspects: number
+  activePercent: number
+  deactivatedProspects: number
+  deactivatedPercent: number
+  statusBreakdown: ProspectStatusStats[]
+}
+
+const ProspectStatusStatsRef =
+  builder.objectRef<ProspectStatusStats>('ProspectStatusStats')
+
+ProspectStatusStatsRef.implement({
+  fields: (t) => ({
+    status: t.exposeString('status'),
+    count: t.exposeInt('count'),
+    percent: t.exposeFloat('percent'),
+  }),
+})
+
+const ProspectStatsRef = builder.objectRef<ProspectStats>('ProspectStats')
+
+ProspectStatsRef.implement({
+  fields: (t) => ({
+    totalProspects: t.exposeInt('totalProspects'),
+    activeProspects: t.exposeInt('activeProspects'),
+    activePercent: t.exposeFloat('activePercent'),
+    deactivatedProspects: t.exposeInt('deactivatedProspects'),
+    deactivatedPercent: t.exposeFloat('deactivatedPercent'),
+    statusBreakdown: t.field({
+      type: [ProspectStatusStatsRef],
+      resolve: (parent) => parent.statusBreakdown,
+    }),
+  }),
+})
+
+builder.queryField('prospectStats', (t) =>
+  t.field({
+    description: 'Prospect counts and percentages by activation and status.',
+    type: ProspectStatsRef,
+    resolve: async () => {
+      const prospects = await db.orm.public.Prospect.all()
+      const totalProspects = prospects.length
+      const deactivatedProspects = prospects.filter(
+        (prospect) => prospect.isDeactivated
+      ).length
+      const activeProspects = totalProspects - deactivatedProspects
+      const statusCounts = new Map<string, number>()
+
+      for (const prospect of prospects) {
+        statusCounts.set(
+          prospect.status,
+          (statusCounts.get(prospect.status) ?? 0) + 1
+        )
+      }
+
+      const percentage = (count: number) =>
+        totalProspects === 0 ? 0 : (count / totalProspects) * 100
+
+      return {
+        totalProspects,
+        activeProspects,
+        activePercent: percentage(activeProspects),
+        deactivatedProspects,
+        deactivatedPercent: percentage(deactivatedProspects),
+        statusBreakdown: Array.from(statusCounts, ([status, count]) => ({
+          status,
+          count,
+          percent: percentage(count),
+        })),
+      }
     },
   })
 )

@@ -1,3 +1,4 @@
+import { ProspectStats } from './ProspectStats'
 import { ConversionMetrics } from './RateConfig'
 import { WorkflowStatus } from './WorkflowStatus'
 
@@ -9,6 +10,7 @@ export const Dashboard = () => {
     <div id='dashboard'>
       <WorkflowStatus></WorkflowStatus>
       <ConversionMetrics />
+      <ProspectStats />
     </div>
   )
 }

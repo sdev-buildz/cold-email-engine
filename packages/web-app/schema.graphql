@@ -83,6 +83,21 @@ type Prospect {
   waitDays: Int
 }
 
+type ProspectStats {
+  activePercent: Float
+  activeProspects: Int
+  deactivatedPercent: Float
+  deactivatedProspects: Int
+  statusBreakdown: [ProspectStatusStats!]
+  totalProspects: Int
+}
+
+type ProspectStatusStats {
+  count: Int
+  percent: Float
+  status: String
+}
+
 """The schema root for fetching data."""
 type Query {
   """Conversion metrics"""
@@ -93,6 +108,9 @@ type Query {
 
   """List of available products."""
   products: [Product!]
+
+  """Prospect counts and percentages by activation and status."""
+  prospectStats: ProspectStats
 
   """
   List of prospects, their contact details, and their status in the workflow sequence.
