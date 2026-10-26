@@ -35,6 +35,7 @@ type Product {
 
 """A Prospect"""
 type Prospect {
+  company: String
   email: String
   id: ID
   isDeactivated: Boolean

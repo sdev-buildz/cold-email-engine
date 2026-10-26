@@ -2,7 +2,6 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { BrowserRouter, Route, Routes } from 'react-router'
 import { NavBar } from './components/NavBar/NavBar'
-import { ProductsPage } from './components/ProductsPage/ProductsPage'
 import { ProspectsPage } from './components/ProspectsPage/ProspectsPage'
 import { AppContext, defaultAppContext } from './contexts/AppContext'
 
@@ -48,7 +47,7 @@ export function App() {
           <BrowserRouter>
             <NavBar />
             <Routes>
-              <Route index element={<ProductsPage />} />
+              <Route index element={<>Use the navbar to navigate.</>} />
               <Route path='prospects' element={<ProspectsPage />} />
             </Routes>
           </BrowserRouter>

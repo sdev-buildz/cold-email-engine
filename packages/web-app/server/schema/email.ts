@@ -14,6 +14,7 @@ ProspectRef.implement({
     id: t.exposeID('id'),
     name: t.exposeString('name'),
     email: t.exposeString('email'),
+    company: t.exposeString('company'),
     role: t.exposeString('role'),
     timezone: t.exposeString('timezone'),
     status: t.exposeString('status'),
