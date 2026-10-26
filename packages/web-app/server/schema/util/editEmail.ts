@@ -1,4 +1,5 @@
 import { initDb } from '@packages/db'
+import type { Models } from '@packages/db/types'
 import type { Prospect } from '../../util/types'
 
 const db = initDb()
@@ -27,6 +28,28 @@ function getNextEnumValue<T extends Record<string, string>>(
   const nextIndex = (currentIndex + 1) % values.length
   return values[nextIndex]
 }
+
+/**
+ * Replaces the placeholders in template emails
+ */
+export const editEmailXmls = (
+  email: Pick<Models.public_EmailTemplate, 'body' | 'subject'>,
+  prospect: Prospect
+) => {
+  const processString = (str: string) =>
+    str
+      .replaceAll('<name>', prospect.name)
+      .replaceAll('<email>', prospect.email)
+      .replaceAll('<company>', prospect.company)
+      .replaceAll('<role>', prospect.role)
+
+  return {
+    ...email,
+    body: processString(email.body),
+    subject: processString(email.subject),
+  }
+}
+
 /**
  *write email
  */
@@ -44,19 +67,7 @@ export const writeEmail = async (prospect: Prospect) => {
     return
   }
 
-  const newEmail = {
-    ...emailTemplate,
-    body: emailTemplate.body
-      .replaceAll('<name>', prospect.name)
-      .replaceAll('<email>', prospect.email)
-      .replaceAll('<company>', prospect.company)
-      .replaceAll('<role>', prospect.role),
-    subject: emailTemplate.subject
-      .replaceAll('<name>', prospect.name)
-      .replaceAll('<email>', prospect.email)
-      .replaceAll('<company>', prospect.company)
-      .replaceAll('<role>', prospect.role),
-  }
+  const newEmail = editEmailXmls(emailTemplate, prospect)
 
   return { newEmail, nextStatus }
 }

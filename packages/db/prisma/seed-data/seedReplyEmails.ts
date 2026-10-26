@@ -28,7 +28,7 @@ import type { Contract } from '../contract'
 /**
  * Inserts Email templates into the database.
  */
-export async function seedEmailTemplates(db: PostgresClient<Contract>) {
+export async function seedReplyEmails(db: PostgresClient<Contract>) {
   // Start from an empty table so you can run this file more than once.
   //  This enables idempotency.
   await db.orm.public.EmailTemplate.where({}).deleteAll()

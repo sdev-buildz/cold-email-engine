@@ -2,6 +2,8 @@ import { initDb } from '@packages/db'
 import { Temporal } from 'temporal-polyfill'
 import 'temporal-polyfill/full/global'
 import { writeEmail } from './editEmail'
+import { getProspectsToday } from './getProspectsToday'
+import { provideReplies } from './provideReplies'
 
 /** DB client */
 const db = initDb()
@@ -23,14 +25,7 @@ export const fastForwardOneDay = async () => {
   waitFromDate.setDate(waitFromDate.getDate() - waitDays)
   const waitFromTemporal = Temporal.Instant.from(waitFromDate.toISOString())
 
-  let prospectsToSend = await db.orm.public.Prospect.where({
-    isDeactivated: false,
-  }).all()
-
-  prospectsToSend = prospectsToSend.filter((prospect) => {
-    const lastSentAt = new Date(prospect.lastSentAt!.epochMilliseconds)
-    return lastSentAt < waitFromDate
-  })
+  const prospectsToSend = await getProspectsToday()
 
   console.log('sending emails for', prospectsToSend.length, 'prospects')
 
@@ -50,6 +45,9 @@ export const fastForwardOneDay = async () => {
     })
   }
 
+  // Randomly provide replies.\
+  await provideReplies()
+
   // forward the current time pointer
   await db.orm.public.WorkflowStatus.where({ id: workflowStatus.id }).update({
     currentTime: currentTime
@@ -57,7 +55,6 @@ export const fastForwardOneDay = async () => {
       .add({ days: 1 })
       .toInstant(),
   })
-  // Randomly provide replies.
 }
 
 /**

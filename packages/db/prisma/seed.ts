@@ -7,6 +7,7 @@ import type { Contract } from './contract'
 import { initDb } from './db'
 import { seedEmailTemplates } from './seed-data/seedEnailTemplates'
 import { seedProspects } from './seed-data/seedProspects'
+import { seedReplyEmails } from './seed-data/seedReplyEmails'
 
 async function seedWorkflowStatus(db: PostgresClient<Contract>) {
   // Start from an empty table so you can run this file more than once.
@@ -38,6 +39,7 @@ async function main() {
   await seedWorkflowStatus(db)
   await seedEmailTemplates(db)
   await seedConversionMetrics(db)
+  await seedReplyEmails(db)
 
   await db.close()
 }
