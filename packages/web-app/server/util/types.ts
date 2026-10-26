@@ -48,3 +48,11 @@ export type Prospect = Omit<
   replyEmail?: EmailRecord
   sentEmails?: EmailRecord[]
 }
+
+/**
+ * Workflow Status
+ */
+export type WorkflowStatus = FilterTemporalType<
+  Models.public_WorkflowStatus,
+  'currentTime'
+>

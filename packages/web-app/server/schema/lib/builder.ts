@@ -1,22 +1,17 @@
 import SchemaBuilder from '@pothos/core'
 import { GraphQLScalarType } from 'graphql'
+import type { Temporal } from 'temporal-polyfill'
+import 'temporal-polyfill/full/global'
 import type { pubsub } from '../../util/pubsub'
+import { resolveDateTime } from '../../util/resolveDateTime'
 import type { Prospect, User } from '../../util/types'
 
-type TemporalInstant = {
-  epochMilliseconds: number
-}
-
-const isTemporalInstant = (value: unknown): value is TemporalInstant =>
+const isTemporalInstant = (value: unknown): value is Temporal.Instant =>
   typeof value === 'object' &&
   value !== null &&
   'epochMilliseconds' in value &&
   typeof value.epochMilliseconds === 'number' &&
   Number.isFinite(value.epochMilliseconds)
-
-/** Convert a Temporal.Instant value to the Date used by the GraphQL schema. */
-export const resolveDateTime = (value: TemporalInstant): Date =>
-  new Date(value.epochMilliseconds)
 
 /**
  *  The custom objects added to the context.

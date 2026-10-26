@@ -20,6 +20,12 @@ type EmailRecord {
 type Mutation {
   """Checkout cart"""
   checkout(cart: [CheckoutInput!]!): [Product!]
+
+  """Configure the number of days to wait between emails"""
+  configureWaitInterval(days: Int!): WorkflowStatus
+
+  """Fast forward the current time by the specified number of days"""
+  fastForward(days: Int!): WorkflowStatus
 }
 
 """A Product"""
@@ -62,6 +68,7 @@ type Query {
   List of prospects, their contact details, and their status in the workflow sequence.
   """
   prospects: [Prospect!]
+  workflowStatus: WorkflowStatus
 }
 
 scalar ReplyIntent
@@ -70,4 +77,9 @@ scalar ReplyIntent
 type Subscription {
   """Updates the available stock in real-time."""
   productUpdates: [Product!]
+}
+
+type WorkflowStatus {
+  currentTime: DateTime
+  waitIntervalDays: Int
 }

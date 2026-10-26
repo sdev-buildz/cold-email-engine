@@ -11,6 +11,19 @@ const schemaFilePath = path.join(
 
 const codegenConfig = {
   ...getCodegenConfig(tsEmitFilePath, schemaFilePath),
+  generates: {
+    [tsEmitFilePath]: {
+      plugins: ['typescript'],
+      config: {
+        scalars: {
+          DateTime: {
+            input: 'string',
+            output: 'Date',
+          },
+        },
+      },
+    },
+  },
   documents: path.join(import.meta.dirname, 'web-client/**/*.{ts,tsx}'),
 }
 buildGraphQL(schema, schemaFilePath, codegenConfig)

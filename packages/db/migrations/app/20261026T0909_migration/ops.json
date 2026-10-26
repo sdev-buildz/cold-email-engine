@@ -1,0 +1,86 @@
+[
+  {
+    "id": "column.public.workflow-status.id",
+    "label": "Add column \"id\" to \"workflow-status\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "id",
+        "table": "workflow-status"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"id\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "workflow-status",
+          "id"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"id\"",
+        "sql": "ALTER TABLE \"public\".\"workflow-status\" ADD COLUMN \"id\" SERIAL NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"id\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "workflow-status",
+          "id"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "primaryKey.workflow-status.workflow-status_pkey",
+    "label": "Add primary key on \"workflow-status\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "primaryKey",
+        "name": "workflow-status_pkey",
+        "table": "workflow-status"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure primary key \"workflow-status_pkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "workflow-status_pkey",
+          "public",
+          "\"public\".\"workflow-status\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add primary key \"workflow-status_pkey\"",
+        "sql": "ALTER TABLE \"public\".\"workflow-status\" ADD CONSTRAINT \"workflow-status_pkey\" PRIMARY KEY (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify primary key \"workflow-status_pkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "workflow-status_pkey",
+          "public",
+          "\"public\".\"workflow-status\""
+        ]
+      }
+    ]
+  }
+]

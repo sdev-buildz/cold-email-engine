@@ -1,6 +1,7 @@
 import CssBaseline from '@mui/material/CssBaseline'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import { BrowserRouter, Route, Routes } from 'react-router'
+import { Dashboard } from './components/dashboard/Dashboard'
 import { NavBar } from './components/NavBar/NavBar'
 import { ProspectsPage } from './components/ProspectsPage/ProspectsPage'
 import { AppContext, defaultAppContext } from './contexts/AppContext'
@@ -49,6 +50,7 @@ export function App() {
             <Routes>
               <Route index element={<>Use the navbar to navigate.</>} />
               <Route path='prospects' element={<ProspectsPage />} />
+              <Route path='dashboard' element={<Dashboard />} />
             </Routes>
           </BrowserRouter>
         </AppContext.Provider>

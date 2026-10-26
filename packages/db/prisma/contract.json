@@ -27,6 +27,10 @@
     "users": {
       "model": "User",
       "namespace": "public"
+    },
+    "workflow-status": {
+      "model": "WorkflowStatus",
+      "namespace": "public"
     }
   },
   "domain": {
@@ -638,6 +642,47 @@
               "namespaceId": "public",
               "table": "users"
             }
+          },
+          "WorkflowStatus": {
+            "fields": {
+              "currentTime": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "waitIntervalDays": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "currentTime": {
+                  "column": "currentTime"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "waitIntervalDays": {
+                  "column": "waitIntervalDays"
+                }
+              },
+              "namespaceId": "public",
+              "table": "workflow-status"
+            }
           }
         }
       }
@@ -1197,6 +1242,45 @@
                   ]
                 }
               ]
+            },
+            "workflow-status": {
+              "columns": {
+                "currentTime": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "kind": "literal",
+                    "value": "2026-10-26T00:00:00Z"
+                  },
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "waitIntervalDays": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "default": {
+                    "kind": "literal",
+                    "value": 3
+                  },
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
             }
           },
           "valueSet": {
@@ -1240,7 +1324,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "3d9b9584bf9aeafd1795335558811f7cdccb0c5b0125fd73c87e4e48cab4c9b0"
+    "storageHash": "e12c73d9749995d0b664afff74aa3bd9431599306e57d7d16cfd7db0deede6e4"
   },
   "execution": {
     "executionHash": "f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d",

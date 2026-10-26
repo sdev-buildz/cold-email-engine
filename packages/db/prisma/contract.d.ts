@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'3d9b9584bf9aeafd1795335558811f7cdccb0c5b0125fd73c87e4e48cab4c9b0'>;
+  StorageHashBase<'e12c73d9749995d0b664afff74aa3bd9431599306e57d7d16cfd7db0deede6e4'>;
 export type ExecutionHash =
   ExecutionHashBase<'f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d'>;
 export type ProfileHash =
@@ -315,6 +315,11 @@ export type FieldOutputTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly userName: CodecTypes['pg/text@1']['output'];
     };
+    readonly WorkflowStatus: {
+      readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly waitIntervalDays: CodecTypes['pg/int4@1']['output'];
+    };
   };
 };
 export type FieldInputTypes = {
@@ -399,6 +404,11 @@ export type FieldInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly userName: CodecTypes['pg/text@1']['input'];
+    };
+    readonly WorkflowStatus: {
+      readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly waitIntervalDays: CodecTypes['pg/int4@1']['input'];
     };
   };
 };
@@ -485,6 +495,11 @@ export type StorageColumnTypes = {
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly user_name: CodecTypes['pg/text@1']['output'];
     };
+    readonly 'workflow-status': {
+      readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
+      readonly id: CodecTypes['pg/int4@1']['output'];
+      readonly waitIntervalDays: CodecTypes['pg/int4@1']['output'];
+    };
   };
 };
 export type StorageColumnInputTypes = {
@@ -569,6 +584,11 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly user_name: CodecTypes['pg/text@1']['input'];
+    };
+    readonly 'workflow-status': {
+      readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['input'];
+      readonly id: CodecTypes['pg/int4@1']['input'];
+      readonly waitIntervalDays: CodecTypes['pg/int4@1']['input'];
     };
   };
 };
@@ -667,6 +687,12 @@ export namespace Models {
     createdBlogs: public_Blog[];
     readonly [RelationKeys]?: 'createdBlogs';
   };
+  export type public_WorkflowStatus = {
+    currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
+    id: CodecTypes['pg/int4@1']['output'];
+    waitIntervalDays: CodecTypes['pg/int4@1']['output'];
+    readonly [RelationKeys]?: never;
+  };
 }
 
 export declare const models: {
@@ -677,6 +703,7 @@ export declare const models: {
     Product: Models.public_Product;
     Prospect: Models.public_Prospect;
     User: Models.public_User;
+    WorkflowStatus: Models.public_WorkflowStatus;
   };
 };
 
@@ -1140,6 +1167,47 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
+            readonly 'workflow-status': {
+              columns: {
+                readonly currentTime: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<
+                      'pg/timestamptz-temporal@1',
+                      '2026-10-26T00:00:00Z'
+                    >;
+                  };
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'autoincrement()';
+                  };
+                  readonly many: false;
+                };
+                readonly waitIntervalDays: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/int4@1', 3>;
+                  };
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id'] };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
+            };
           };
           readonly valueSet: {
             readonly EmailStatus: {
@@ -1195,6 +1263,10 @@ type ContractBase = Omit<
     readonly blog: { readonly namespace: 'public' & NamespaceId; readonly model: 'Blog' };
     readonly product: { readonly namespace: 'public' & NamespaceId; readonly model: 'Product' };
     readonly users: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
+    readonly 'workflow-status': {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'WorkflowStatus';
+    };
   };
   readonly domain: {
     readonly namespaces: {
@@ -1577,6 +1649,35 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly updatedAt: { readonly column: 'updatedAt' };
                 readonly userName: { readonly column: 'user_name' };
+              };
+            };
+          };
+          readonly WorkflowStatus: {
+            readonly fields: {
+              readonly currentTime: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly waitIntervalDays: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'workflow-status';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly currentTime: { readonly column: 'currentTime' };
+                readonly id: { readonly column: 'id' };
+                readonly waitIntervalDays: { readonly column: 'waitIntervalDays' };
               };
             };
           };
