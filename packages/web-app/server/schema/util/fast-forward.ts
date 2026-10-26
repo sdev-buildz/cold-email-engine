@@ -1,4 +1,4 @@
-import { initDb } from '@packages/db';
+import { initDb } from '@packages/db'
 
 /** DB client */
 const db = initDb()
@@ -14,6 +14,4 @@ export const fastForwardOneDay = async () => {
   }
 
   const { currentTime, waitIntervalDays: waitDays } = workflowStatus
-
-  
 }
