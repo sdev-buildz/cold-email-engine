@@ -73,7 +73,3 @@ builder.queryType({
 builder.mutationType({
   description: `The schema root for mutating data`,
 })
-
-builder.subscriptionType({
-  description: `The schema root for subscriptions`,
-})

@@ -18,9 +18,8 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'9a0ffec2632aed71ea2f9ffb83abd75c0be3980c448421d533c4cd7f2cf42622'>;
-export type ExecutionHash =
-  ExecutionHashBase<'f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d'>;
+  StorageHashBase<'f0e515c10fe5d113419f2d559239f87193cb60918e4514465fc896bada03a4fb'>;
+export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -234,16 +233,6 @@ type DefaultLiteralValue<CodecId extends string, Encoded> = CodecId extends keyo
 
 export type FieldOutputTypes = {
   readonly public: {
-    readonly Blog: {
-      readonly body: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly published: CodecTypes['pg/bool@1']['output'];
-      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly tagLine: CodecTypes['pg/text@1']['output'] | null;
-      readonly title: CodecTypes['pg/text@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly userId: CodecTypes['pg/int4@1']['output'];
-    };
     readonly ConversionMetrics: {
       readonly bounceRate: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -278,15 +267,6 @@ export type FieldOutputTypes = {
         | 'unsubscribed'
         | 'deactivated';
       readonly subject: CodecTypes['pg/text@1']['output'];
-    };
-    readonly Product: {
-      readonly description: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly imageUrl: CodecTypes['pg/text@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
-      readonly price: CodecTypes['pg/int4@1']['output'];
-      readonly stockCount: CodecTypes['pg/int4@1']['output'];
-      readonly summary: CodecTypes['pg/text@1']['output'];
     };
     readonly Prospect: {
       readonly company: CodecTypes['pg/text@1']['output'];
@@ -332,13 +312,6 @@ export type FieldOutputTypes = {
         | 'referral'
         | 'others';
       readonly subject: CodecTypes['pg/text@1']['output'];
-    };
-    readonly User: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly email: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly userName: CodecTypes['pg/text@1']['output'];
     };
     readonly WorkflowStatus: {
       readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -349,16 +322,6 @@ export type FieldOutputTypes = {
 };
 export type FieldInputTypes = {
   readonly public: {
-    readonly Blog: {
-      readonly body: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly published: CodecTypes['pg/bool@1']['input'];
-      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly tagLine: CodecTypes['pg/text@1']['input'] | null;
-      readonly title: CodecTypes['pg/text@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly userId: CodecTypes['pg/int4@1']['input'];
-    };
     readonly ConversionMetrics: {
       readonly bounceRate: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -393,15 +356,6 @@ export type FieldInputTypes = {
         | 'unsubscribed'
         | 'deactivated';
       readonly subject: CodecTypes['pg/text@1']['input'];
-    };
-    readonly Product: {
-      readonly description: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly imageUrl: CodecTypes['pg/text@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
-      readonly price: CodecTypes['pg/int4@1']['input'];
-      readonly stockCount: CodecTypes['pg/int4@1']['input'];
-      readonly summary: CodecTypes['pg/text@1']['input'];
     };
     readonly Prospect: {
       readonly company: CodecTypes['pg/text@1']['input'];
@@ -448,13 +402,6 @@ export type FieldInputTypes = {
         | 'others';
       readonly subject: CodecTypes['pg/text@1']['input'];
     };
-    readonly User: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly email: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly userName: CodecTypes['pg/text@1']['input'];
-    };
     readonly WorkflowStatus: {
       readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -464,16 +411,6 @@ export type FieldInputTypes = {
 };
 export type StorageColumnTypes = {
   readonly public: {
-    readonly blog: {
-      readonly body: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly published: CodecTypes['pg/bool@1']['output'];
-      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly tagLine: CodecTypes['pg/text@1']['output'] | null;
-      readonly title: CodecTypes['pg/text@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly user_id: CodecTypes['pg/int4@1']['output'];
-    };
     readonly ConversionMetrics: {
       readonly bounceRate: CodecTypes['pg/int4@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -508,15 +445,6 @@ export type StorageColumnTypes = {
         | 'unsubscribed'
         | 'deactivated';
       readonly subject: CodecTypes['pg/text@1']['output'];
-    };
-    readonly product: {
-      readonly description: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly imageUrl: CodecTypes['pg/text@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
-      readonly price: CodecTypes['pg/int4@1']['output'];
-      readonly stockCount: CodecTypes['pg/int4@1']['output'];
-      readonly summary: CodecTypes['pg/text@1']['output'];
     };
     readonly Prospect: {
       readonly company: CodecTypes['pg/text@1']['output'];
@@ -563,13 +491,6 @@ export type StorageColumnTypes = {
         | 'others';
       readonly subject: CodecTypes['pg/text@1']['output'];
     };
-    readonly users: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly email: CodecTypes['pg/text@1']['output'];
-      readonly id: CodecTypes['pg/int4@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly user_name: CodecTypes['pg/text@1']['output'];
-    };
     readonly 'workflow-status': {
       readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
@@ -579,16 +500,6 @@ export type StorageColumnTypes = {
 };
 export type StorageColumnInputTypes = {
   readonly public: {
-    readonly blog: {
-      readonly body: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly published: CodecTypes['pg/bool@1']['input'];
-      readonly publishedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly tagLine: CodecTypes['pg/text@1']['input'] | null;
-      readonly title: CodecTypes['pg/text@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly user_id: CodecTypes['pg/int4@1']['input'];
-    };
     readonly ConversionMetrics: {
       readonly bounceRate: CodecTypes['pg/int4@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -623,15 +534,6 @@ export type StorageColumnInputTypes = {
         | 'unsubscribed'
         | 'deactivated';
       readonly subject: CodecTypes['pg/text@1']['input'];
-    };
-    readonly product: {
-      readonly description: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly imageUrl: CodecTypes['pg/text@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
-      readonly price: CodecTypes['pg/int4@1']['input'];
-      readonly stockCount: CodecTypes['pg/int4@1']['input'];
-      readonly summary: CodecTypes['pg/text@1']['input'];
     };
     readonly Prospect: {
       readonly company: CodecTypes['pg/text@1']['input'];
@@ -678,13 +580,6 @@ export type StorageColumnInputTypes = {
         | 'others';
       readonly subject: CodecTypes['pg/text@1']['input'];
     };
-    readonly users: {
-      readonly createdAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly email: CodecTypes['pg/text@1']['input'];
-      readonly id: CodecTypes['pg/int4@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly user_name: CodecTypes['pg/text@1']['input'];
-    };
     readonly 'workflow-status': {
       readonly currentTime: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
@@ -694,18 +589,6 @@ export type StorageColumnInputTypes = {
 };
 
 export namespace Models {
-  export type public_Blog = {
-    body: CodecTypes['pg/text@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    published: CodecTypes['pg/bool@1']['output'];
-    publishedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    tagLine: CodecTypes['pg/text@1']['output'] | null;
-    title: CodecTypes['pg/text@1']['output'];
-    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    userId: CodecTypes['pg/int4@1']['output'];
-    author: public_User;
-    readonly [RelationKeys]?: 'author';
-  };
   export type public_ConversionMetrics = {
     bounceRate: CodecTypes['pg/int4@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
@@ -743,16 +626,6 @@ export namespace Models {
       | 'unsubscribed'
       | 'deactivated';
     subject: CodecTypes['pg/text@1']['output'];
-    readonly [RelationKeys]?: never;
-  };
-  export type public_Product = {
-    description: CodecTypes['pg/text@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    imageUrl: CodecTypes['pg/text@1']['output'];
-    name: CodecTypes['pg/text@1']['output'];
-    price: CodecTypes['pg/int4@1']['output'];
-    stockCount: CodecTypes['pg/int4@1']['output'];
-    summary: CodecTypes['pg/text@1']['output'];
     readonly [RelationKeys]?: never;
   };
   export type public_Prospect = {
@@ -805,15 +678,6 @@ export namespace Models {
     subject: CodecTypes['pg/text@1']['output'];
     readonly [RelationKeys]?: never;
   };
-  export type public_User = {
-    createdAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    email: CodecTypes['pg/text@1']['output'];
-    id: CodecTypes['pg/int4@1']['output'];
-    updatedAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    userName: CodecTypes['pg/text@1']['output'];
-    createdBlogs: public_Blog[];
-    readonly [RelationKeys]?: 'createdBlogs';
-  };
   export type public_WorkflowStatus = {
     currentTime: CodecTypes['pg/timestamptz-temporal@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
@@ -824,14 +688,11 @@ export namespace Models {
 
 export declare const models: {
   public: {
-    Blog: Models.public_Blog;
     ConversionMetrics: Models.public_ConversionMetrics;
     EmailRecord: Models.public_EmailRecord;
     EmailTemplate: Models.public_EmailTemplate;
-    Product: Models.public_Product;
     Prospect: Models.public_Prospect;
     ReplyEmails: Models.public_ReplyEmails;
-    User: Models.public_User;
     WorkflowStatus: Models.public_WorkflowStatus;
   };
 };
@@ -854,91 +715,6 @@ type ContractBase = Omit<
         readonly kind: 'postgres-schema';
         readonly entries: {
           readonly table: {
-            readonly blog: {
-              columns: {
-                readonly body: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly published: {
-                  readonly dataType: 'pg/bool';
-                  readonly codecId: 'pg/bool@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'literal';
-                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
-                  };
-                  readonly many: false;
-                };
-                readonly publishedAt: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                  readonly many: false;
-                };
-                readonly tagLine: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: true;
-                  readonly many: false;
-                };
-                readonly title: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly updatedAt: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly user_id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'blog_user_id_idx_6c952402';
-                  readonly prefix: 'blog_user_id_idx';
-                  readonly columns: readonly ['user_id'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'blog';
-                    readonly columns: readonly ['user_id'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'users';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
             readonly ConversionMetrics: {
               columns: {
                 readonly bounceRate: {
@@ -1158,60 +934,6 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly product: {
-              columns: {
-                readonly description: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly imageUrl: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly name: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly price: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly stockCount: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly summary: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
             readonly Prospect: {
               columns: {
                 readonly company: {
@@ -1398,52 +1120,6 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly users: {
-              columns: {
-                readonly createdAt: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                  readonly many: false;
-                };
-                readonly email: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly id: {
-                  readonly dataType: 'pg/int4';
-                  readonly codecId: 'pg/int4@1';
-                  readonly nullable: false;
-                  readonly default: {
-                    readonly kind: 'function';
-                    readonly expression: 'autoincrement()';
-                  };
-                  readonly many: false;
-                };
-                readonly updatedAt: {
-                  readonly dataType: 'pg/timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-                readonly user_name: {
-                  readonly dataType: 'pg/text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                  readonly many: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [
-                { readonly columns: readonly ['email'] },
-                { readonly columns: readonly ['user_name'] },
-              ];
-              indexes: readonly [];
-              foreignKeys: readonly [];
-            };
             readonly 'workflow-status': {
               columns: {
                 readonly currentTime: {
@@ -1545,9 +1221,6 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'ReplyEmails';
     };
-    readonly blog: { readonly namespace: 'public' & NamespaceId; readonly model: 'Blog' };
-    readonly product: { readonly namespace: 'public' & NamespaceId; readonly model: 'Product' };
-    readonly users: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
     readonly 'workflow-status': {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'WorkflowStatus';
@@ -1557,73 +1230,6 @@ type ContractBase = Omit<
     readonly namespaces: {
       readonly public: {
         readonly models: {
-          readonly Blog: {
-            readonly fields: {
-              readonly body: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly published: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
-              };
-              readonly publishedAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                };
-              };
-              readonly tagLine: {
-                readonly nullable: true;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly title: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly updatedAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                };
-              };
-              readonly userId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-            };
-            readonly relations: {
-              readonly author: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['userId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'blog';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly body: { readonly column: 'body' };
-                readonly id: { readonly column: 'id' };
-                readonly published: { readonly column: 'published' };
-                readonly publishedAt: { readonly column: 'publishedAt' };
-                readonly tagLine: { readonly column: 'tagLine' };
-                readonly title: { readonly column: 'title' };
-                readonly updatedAt: { readonly column: 'updatedAt' };
-                readonly userId: { readonly column: 'user_id' };
-              };
-            };
-          };
           readonly ConversionMetrics: {
             readonly fields: {
               readonly bounceRate: {
@@ -1778,52 +1384,6 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly sequence_state: { readonly column: 'sequence_state' };
                 readonly subject: { readonly column: 'subject' };
-              };
-            };
-          };
-          readonly Product: {
-            readonly fields: {
-              readonly description: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly imageUrl: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly name: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly price: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly stockCount: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly summary: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: Record<string, never>;
-            readonly storage: {
-              readonly table: 'product';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly description: { readonly column: 'description' };
-                readonly id: { readonly column: 'id' };
-                readonly imageUrl: { readonly column: 'imageUrl' };
-                readonly name: { readonly column: 'name' };
-                readonly price: { readonly column: 'price' };
-                readonly stockCount: { readonly column: 'stockCount' };
-                readonly summary: { readonly column: 'summary' };
               };
             };
           };
@@ -1985,57 +1545,6 @@ type ContractBase = Omit<
               };
             };
           };
-          readonly User: {
-            readonly fields: {
-              readonly createdAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                };
-              };
-              readonly email: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
-              };
-              readonly updatedAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                };
-              };
-              readonly userName: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: {
-              readonly createdBlogs: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'Blog' };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['userId'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'users';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly createdAt: { readonly column: 'createdAt' };
-                readonly email: { readonly column: 'email' };
-                readonly id: { readonly column: 'id' };
-                readonly updatedAt: { readonly column: 'updatedAt' };
-                readonly userName: { readonly column: 'user_name' };
-              };
-            };
-          };
           readonly WorkflowStatus: {
             readonly fields: {
               readonly currentTime: {
@@ -2097,31 +1606,6 @@ type ContractBase = Omit<
     };
   };
   readonly extensions: {};
-  readonly execution: {
-    readonly executionHash: ExecutionHash;
-    readonly mutations: {
-      readonly defaults: readonly [
-        {
-          readonly onCreate: { readonly id: 'instantNow'; readonly kind: 'generator' };
-          readonly onUpdate: { readonly id: 'instantNow'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'blog';
-            readonly field: 'updatedAt';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onCreate: { readonly id: 'instantNow'; readonly kind: 'generator' };
-          readonly onUpdate: { readonly id: 'instantNow'; readonly kind: 'generator' };
-          readonly ref: {
-            readonly entry: 'users';
-            readonly field: 'updatedAt';
-            readonly namespace: 'public';
-          };
-        },
-      ];
-    };
-  };
   readonly meta: {};
 
   readonly profileHash: ProfileHash;

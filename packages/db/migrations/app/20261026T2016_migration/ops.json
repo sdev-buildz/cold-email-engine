@@ -1,0 +1,113 @@
+[
+  {
+    "id": "dropTable.blog",
+    "label": "Drop table \"blog\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "blog"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"blog\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blog\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"blog\"",
+        "sql": "DROP TABLE \"public\".\"blog\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"blog\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"blog\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropTable.product",
+    "label": "Drop table \"product\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "product"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"product\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"product\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"product\"",
+        "sql": "DROP TABLE \"public\".\"product\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"product\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"product\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dropTable.users",
+    "label": "Drop table \"users\"",
+    "operationClass": "destructive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "users"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"users\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"users\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "drop table \"users\"",
+        "sql": "DROP TABLE \"public\".\"users\""
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"users\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"users\""
+        ]
+      }
+    ]
+  }
+]
