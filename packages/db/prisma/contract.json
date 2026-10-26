@@ -516,6 +516,13 @@
                   "kind": "scalar"
                 }
               },
+              "lastSentAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
               "name": {
                 "nullable": false,
                 "type": {
@@ -641,6 +648,9 @@
                 },
                 "isDeactivated": {
                   "column": "isDeactivated"
+                },
+                "lastSentAt": {
+                  "column": "lastSentAt"
                 },
                 "name": {
                   "column": "name"
@@ -1107,6 +1117,15 @@
                   },
                   "nullable": false
                 },
+                "lastSentAt": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "kind": "literal",
+                    "value": "2026-10-25T00:00:00Z"
+                  },
+                  "nullable": false
+                },
                 "name": {
                   "codecId": "pg/text@1",
                   "dataType": "pg/text",
@@ -1522,7 +1541,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "96fbccd216e706bc7b5e8c3f867f352c494f3ed666acb4cdbb258e95bceac79a"
+    "storageHash": "eaa868448d8835a3d20840b645d15905594e382dff05fce814638c7fa94c72db"
   },
   "execution": {
     "executionHash": "f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d",

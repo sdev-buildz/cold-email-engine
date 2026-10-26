@@ -1,0 +1,44 @@
+[
+  {
+    "id": "column.public.Prospect.lastSentAt",
+    "label": "Add column \"lastSentAt\" to \"Prospect\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "column",
+        "name": "lastSentAt",
+        "table": "Prospect"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure column \"lastSentAt\" is missing",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "lastSentAt"
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add column \"lastSentAt\"",
+        "sql": "ALTER TABLE \"public\".\"Prospect\" ADD COLUMN \"lastSentAt\" timestamptz DEFAULT '2026-10-25T00:00:00Z'::timestamptz NOT NULL"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify column \"lastSentAt\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"information_schema\".\"columns\" WHERE (\"table_schema\" = $1 AND \"table_name\" = $2 AND \"column_name\" = $3)) AS \"result\"",
+        "params": [
+          "public",
+          "Prospect",
+          "lastSentAt"
+        ]
+      }
+    ]
+  }
+]

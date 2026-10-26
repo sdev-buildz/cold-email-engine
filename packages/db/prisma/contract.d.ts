@@ -18,7 +18,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'96fbccd216e706bc7b5e8c3f867f352c494f3ed666acb4cdbb258e95bceac79a'>;
+  StorageHashBase<'eaa868448d8835a3d20840b645d15905594e382dff05fce814638c7fa94c72db'>;
 export type ExecutionHash =
   ExecutionHashBase<'f08d3c78314c8e1aaf280be9ef231da47f115fbda5c65342db4d4296327cba9d'>;
 export type ProfileHash =
@@ -293,6 +293,7 @@ export type FieldOutputTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly isDeactivated: CodecTypes['pg/bool@1']['output'];
+      readonly lastSentAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly nextEmailId: CodecTypes['pg/int4@1']['output'] | null;
       readonly replyEmailId: CodecTypes['pg/int4@1']['output'] | null;
@@ -394,6 +395,7 @@ export type FieldInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly isDeactivated: CodecTypes['pg/bool@1']['input'];
+      readonly lastSentAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly nextEmailId: CodecTypes['pg/int4@1']['input'] | null;
       readonly replyEmailId: CodecTypes['pg/int4@1']['input'] | null;
@@ -495,6 +497,7 @@ export type StorageColumnTypes = {
       readonly email: CodecTypes['pg/text@1']['output'];
       readonly id: CodecTypes['pg/int4@1']['output'];
       readonly isDeactivated: CodecTypes['pg/bool@1']['output'];
+      readonly lastSentAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly name: CodecTypes['pg/text@1']['output'];
       readonly nextEmailId: CodecTypes['pg/int4@1']['output'] | null;
       readonly replyEmailId: CodecTypes['pg/int4@1']['output'] | null;
@@ -596,6 +599,7 @@ export type StorageColumnInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly id: CodecTypes['pg/int4@1']['input'];
       readonly isDeactivated: CodecTypes['pg/bool@1']['input'];
+      readonly lastSentAt: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly name: CodecTypes['pg/text@1']['input'];
       readonly nextEmailId: CodecTypes['pg/int4@1']['input'] | null;
       readonly replyEmailId: CodecTypes['pg/int4@1']['input'] | null;
@@ -704,6 +708,7 @@ export namespace Models {
     email: CodecTypes['pg/text@1']['output'];
     id: CodecTypes['pg/int4@1']['output'];
     isDeactivated: CodecTypes['pg/bool@1']['output'];
+    lastSentAt: CodecTypes['pg/timestamptz-temporal@1']['output'];
     name: CodecTypes['pg/text@1']['output'];
     nextEmailId: CodecTypes['pg/int4@1']['output'] | null;
     replyEmailId: CodecTypes['pg/int4@1']['output'] | null;
@@ -1171,6 +1176,19 @@ type ContractBase = Omit<
                   readonly default: {
                     readonly kind: 'literal';
                     readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                  readonly many: false;
+                };
+                readonly lastSentAt: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<
+                      'pg/timestamptz-temporal@1',
+                      '2026-10-25T00:00:00Z'
+                    >;
                   };
                   readonly many: false;
                 };
@@ -1719,6 +1737,13 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
               };
+              readonly lastSentAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-temporal@1';
+                };
+              };
               readonly name: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
@@ -1805,6 +1830,7 @@ type ContractBase = Omit<
                 readonly email: { readonly column: 'email' };
                 readonly id: { readonly column: 'id' };
                 readonly isDeactivated: { readonly column: 'isDeactivated' };
+                readonly lastSentAt: { readonly column: 'lastSentAt' };
                 readonly name: { readonly column: 'name' };
                 readonly nextEmailId: { readonly column: 'nextEmailId' };
                 readonly replyEmailId: { readonly column: 'replyEmailId' };
