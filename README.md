@@ -76,7 +76,7 @@ _(Leave this terminal open to keep the backend server alive.)_
 Open another **new** dedicated terminal window/tab to start the frontend application:
 
 ```shell
-pnpm run start-react
+pnpm run start-react:watch
 ```
 
 It runs at "https://localhost:3000". So you may need to make sure that the port is available for this server.
